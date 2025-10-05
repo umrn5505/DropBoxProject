@@ -286,6 +286,19 @@ task_t* create_task(task_type_t type, int client_socket, const char *username, c
     return task;
 }
 
+// Enhanced task creation with priority support
+task_t* create_priority_task(task_type_t type, int client_socket, const char *username, const char *command, int priority) {
+    task_t *task = create_task(type, client_socket, username, command);
+    if (!task) return NULL;
+    
+    // Set priority and creation time
+    task->priority = (priority >= 1 && priority <= MAX_PRIORITY) ? priority : PRIORITY_MEDIUM;
+    task->encoding_type = ENCODING_NONE;
+    task->creation_time = time(NULL);
+    
+    return task;
+}
+
 void destroy_task(task_t *task) {
     if (!task) return;
     
@@ -344,4 +357,67 @@ void signal_shutdown(server_context_t *server) {
     pthread_cond_broadcast(&server->task_queue->not_empty);
     
     printf("Shutdown signal sent to all threads\n");
+}
+
+// Priority queue implementation for task queue
+int enqueue_priority_task(task_queue_t *queue, task_t *task) {
+    if (!queue || !task) return -1;
+    
+    pthread_mutex_lock(&queue->mutex);
+    
+    // Wait if queue is full
+    while (queue->count >= queue->capacity) {
+        pthread_cond_wait(&queue->not_full, &queue->mutex);
+    }
+    
+    // Insert task in priority order (1 = highest priority, 3 = lowest)
+    // For tasks with same priority, maintain FIFO order based on creation time
+    
+    if (queue->head == NULL) {
+        // Empty queue
+        queue->head = task;
+        queue->tail = task;
+        task->next = NULL;
+    } else {
+        task_t *current = queue->head;
+        task_t *previous = NULL;
+        
+        // Find insertion point
+        while (current != NULL) {
+            // Higher priority (lower number) goes first
+            // For same priority, earlier creation time goes first
+            if (task->priority < current->priority || 
+                (task->priority == current->priority && task->creation_time < current->creation_time)) {
+                break;
+            }
+            previous = current;
+            current = current->next;
+        }
+        
+        // Insert task
+        task->next = current;
+        
+        if (previous == NULL) {
+            // Insert at head
+            queue->head = task;
+        } else {
+            previous->next = task;
+        }
+        
+        if (current == NULL) {
+            // Insert at tail
+            queue->tail = task;
+        }
+    }
+    
+    queue->count++;
+    
+    printf("Priority task enqueued: type=%d, priority=%d, count=%d\n", 
+           task->type, task->priority, queue->count);
+    
+    // Signal that queue is not empty
+    pthread_cond_signal(&queue->not_empty);
+    
+    pthread_mutex_unlock(&queue->mutex);
+    return 0;
 }
