@@ -17,17 +17,17 @@ void send_file_data(int socket_fd, const char *filename) {
         return;
     }
     
-    // Get file size
+    
     fseek(file, 0, SEEK_END);
     size_t file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
     
     printf("Uploading file %s (%zu bytes)...\n", filename, file_size);
     
-    // Send file size first
+    
     send(socket_fd, &file_size, sizeof(size_t), 0);
     
-    // Send file data in chunks
+    
     char buffer[BUFFER_SIZE];
     size_t total_sent = 0;
     
@@ -53,7 +53,7 @@ void send_file_data(int socket_fd, const char *filename) {
 }
 
 void receive_file_data(int socket_fd, const char *filename) {
-    // Receive file size first
+    
     size_t file_size;
     if (recv(socket_fd, &file_size, sizeof(size_t), 0) != sizeof(size_t)) {
         printf("Error receiving file size\n");
@@ -68,7 +68,7 @@ void receive_file_data(int socket_fd, const char *filename) {
         return;
     }
     
-    // Receive file data
+    
     char buffer[BUFFER_SIZE];
     size_t total_received = 0;
     
@@ -98,19 +98,19 @@ int main() {
     char command[256];
     char filename[MAX_FILENAME];
     
-    // Create socket
+    
     socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
         perror("Socket creation failed");
         return 1;
     }
     
-    // Set up server address
+    
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     
-    // Connect to server
+    
     if (connect(socket_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connection failed");
         close(socket_fd);
@@ -119,29 +119,29 @@ int main() {
     
     printf("Connected to DropBox server!\n");
     
-    // Authentication loop
+    
     while (1) {
         memset(buffer, 0, BUFFER_SIZE);
         recv(socket_fd, buffer, BUFFER_SIZE - 1, 0);
         printf("%s", buffer);
         
         if (strstr(buffer, "Available commands:")) {
-            break; // Authenticated successfully
+            break; 
         }
         
-        // Get authentication command
+        
         fgets(command, sizeof(command), stdin);
-        command[strcspn(command, "\n")] = 0; // Remove newline
+        command[strcspn(command, "\n")] = 0; 
         
         send(socket_fd, command, strlen(command), 0);
         
-        // Check response
+       
         memset(buffer, 0, BUFFER_SIZE);
         recv(socket_fd, buffer, BUFFER_SIZE - 1, 0);
         printf("%s", buffer);
         
         if (strstr(buffer, "SUCCESS")) {
-            // Continue to get the next message (command prompt)
+            
             memset(buffer, 0, BUFFER_SIZE);
             recv(socket_fd, buffer, BUFFER_SIZE - 1, 0);
             printf("%s", buffer);
@@ -149,7 +149,6 @@ int main() {
         }
     }
     
-    // Command loop
     printf("\n=== Enhanced DropBox Client with Priority Support ===\n");
     printf("Available commands:\n");
     printf("  UPLOAD <filename> [--priority=high|medium|low]\n");
@@ -162,46 +161,46 @@ int main() {
         printf("> ");
         fflush(stdout);
         
-        // Get command from user
+        
         fgets(command, sizeof(command), stdin);
-        command[strcspn(command, "\n")] = 0; // Remove newline
+        command[strcspn(command, "\n")] = 0; 
         
         if (strlen(command) == 0) continue;
         
-        // Check for quit
+        
         if (strcmp(command, "QUIT") == 0 || strcmp(command, "quit") == 0) {
             send(socket_fd, command, strlen(command), 0);
             break;
         }
         
-        // Send command to server
+       
         send(socket_fd, command, strlen(command), 0);
         
-        // Parse command to see if it's UPLOAD or DOWNLOAD
+        
         char cmd_type[64];
         sscanf(command, "%63s %255s", cmd_type, filename);
         
-        // Convert to uppercase for comparison
+        
         for (int i = 0; cmd_type[i]; i++) {
             cmd_type[i] = toupper(cmd_type[i]);
         }
         
-        // Wait for server response
+        
         memset(buffer, 0, BUFFER_SIZE);
         recv(socket_fd, buffer, BUFFER_SIZE - 1, 0);
         
         if (strcmp(cmd_type, "UPLOAD") == 0) {
             if (strstr(buffer, "SEND_FILE_DATA")) {
                 send_file_data(socket_fd, filename);
-                // Get final response
+                
                 memset(buffer, 0, BUFFER_SIZE);
                 recv(socket_fd, buffer, BUFFER_SIZE - 1, 0);
             }
         } else if (strcmp(cmd_type, "DOWNLOAD") == 0) {
             if (strstr(buffer, "SUCCESS") || buffer[0] == 0) {
-                // Server is sending file data
+                
                 receive_file_data(socket_fd, filename);
-                continue; // Skip printing buffer as it contains binary data
+                continue; 
             }
         }
         

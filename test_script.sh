@@ -60,12 +60,13 @@ echo "QUIT"
 echo
 
 echo "=== Expected Behaviors ==="
-echo "✓ High priority tasks should be processed before low priority"
+echo "✓ Priority tasks should be processed before low priority"
 echo "✓ File uploads should update quota usage"
 echo "✓ File downloads should work correctly"
 echo "✓ Concurrent operations on same file should be handled safely"
 echo "✓ File listing should show metadata and quota information"
 echo "✓ No memory leaks or race conditions"
+echo "✓ Efficient thread synchronization"
 echo
 
 echo "=== Stress Test Commands ==="

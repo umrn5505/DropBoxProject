@@ -2,7 +2,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-// Quota management implementation
+
 
 user_quota_t* load_user_quota(const char *username) {
     if (!username) return NULL;
@@ -10,10 +10,10 @@ user_quota_t* load_user_quota(const char *username) {
     user_quota_t *quota = malloc(sizeof(user_quota_t));
     if (!quota) return NULL;
     
-    // Initialize quota structure
+    
     strncpy(quota->username, username, MAX_USERNAME - 1);
     quota->username[MAX_USERNAME - 1] = '\0';
-    quota->quota_limit_bytes = DEFAULT_USER_QUOTA_MB * 1024 * 1024; // Default 100MB
+    quota->quota_limit_bytes = DEFAULT_USER_QUOTA_MB * 1024 * 1024; 
     quota->used_bytes = 0;
     quota->file_count = 0;
     
@@ -22,7 +22,7 @@ user_quota_t* load_user_quota(const char *username) {
         return NULL;
     }
     
-    // Try to load existing quota file
+    
     char quota_file[512];
     snprintf(quota_file, sizeof(quota_file), "storage/%s%s", username, QUOTA_FILE_SUFFIX);
     
@@ -31,7 +31,7 @@ user_quota_t* load_user_quota(const char *username) {
         fscanf(file, "%zu %zu %d", &quota->quota_limit_bytes, &quota->used_bytes, &quota->file_count);
         fclose(file);
     } else {
-        // Calculate current usage by scanning user directory
+        
         calculate_quota_usage(quota);
     }
     
@@ -41,7 +41,7 @@ user_quota_t* load_user_quota(const char *username) {
 int save_user_quota(const user_quota_t *quota) {
     if (!quota) return -1;
     
-    // Ensure storage directory exists
+    
     struct stat st = {0};
     if (stat("storage", &st) == -1) {
         if (mkdir("storage", 0700) != 0) {
@@ -103,7 +103,7 @@ void destroy_user_quota(user_quota_t *quota) {
     free(quota);
 }
 
-// Helper function to calculate quota usage by scanning directory
+
 int calculate_quota_usage(user_quota_t *quota) {
     if (!quota) return -1;
     
@@ -112,7 +112,7 @@ int calculate_quota_usage(user_quota_t *quota) {
     
     DIR *dir = opendir(user_dir);
     if (!dir) {
-        // Directory doesn't exist, create it
+       
         if (mkdir(user_dir, 0700) != 0) {
             return -1;
         }
@@ -127,9 +127,9 @@ int calculate_quota_usage(user_quota_t *quota) {
     quota->file_count = 0;
     
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_name[0] == '.') continue; // Skip . and ..
+        if (entry->d_name[0] == '.') continue;
         
-        // Skip metadata and quota files
+        
         if (strstr(entry->d_name, METADATA_FILE_SUFFIX) || 
             strstr(entry->d_name, QUOTA_FILE_SUFFIX)) {
             continue;

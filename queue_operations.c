@@ -293,7 +293,6 @@ task_t* create_priority_task(task_type_t type, int client_socket, const char *us
     
     // Set priority and creation time
     task->priority = (priority >= 1 && priority <= MAX_PRIORITY) ? priority : PRIORITY_MEDIUM;
-    task->encoding_type = ENCODING_NONE;
     task->creation_time = time(NULL);
     
     return task;
