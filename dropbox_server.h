@@ -29,12 +29,6 @@
 #define MAX_COMMAND 512
 
 
-#define DEFAULT_USER_QUOTA_MB 100
-#define MAX_FILE_SIZE_MB 50
-#define QUOTA_FILE_SUFFIX ".quota"
-#define METADATA_FILE_SUFFIX ".meta"
-
-
 #define PRIORITY_HIGH 1
 #define PRIORITY_MEDIUM 2
 #define PRIORITY_LOW 3
@@ -63,7 +57,6 @@ typedef struct task_queue task_queue_t;
 typedef struct task task_t;
 typedef struct user_session user_session_t;
 typedef struct file_metadata file_metadata_t;
-typedef struct user_quota user_quota_t;
 
 
 struct file_metadata {
@@ -72,15 +65,6 @@ struct file_metadata {
     time_t created_time;
     time_t modified_time;
     char checksum[65];
-};
-
-
-struct user_quota {
-    char username[MAX_USERNAME];
-    size_t quota_limit_bytes;
-    size_t used_bytes;
-    int file_count;
-    pthread_mutex_t quota_mutex;
 };
 
 
@@ -195,14 +179,6 @@ int save_file_to_storage(const char *username, const char *filename, const char 
 int load_file_from_storage(const char *username, const char *filename, char **data, size_t *data_size);
 int delete_file_from_storage(const char *username, const char *filename);
 int list_user_files(const char *username, char **file_list, size_t *list_size);
-
-
-user_quota_t* load_user_quota(const char *username);
-int save_user_quota(const user_quota_t *quota);
-int check_quota_available(const char *username, size_t required_bytes);
-int update_quota_usage(const char *username, long long size_delta);
-void destroy_user_quota(user_quota_t *quota);
-int calculate_quota_usage(user_quota_t *quota);
 
 int save_file_metadata(const char *username, const file_metadata_t *metadata);
 file_metadata_t* load_file_metadata(const char *username, const char *filename);

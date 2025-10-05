@@ -7,7 +7,10 @@
 
 
 void handle_upload_task(task_t *task) {
-    printf("Processing UPLOAD task for file %s (user: %s, priority: %d)\n", 
+    printf("Processing UPLOAD task for file %s (user: %s, pri    }
+    
+    
+    task->result_code = 0;d)\n", 
            task->filename, task->username, task->priority);
     
     pthread_mutex_lock(&task->task_mutex);
@@ -16,15 +19,6 @@ void handle_upload_task(task_t *task) {
     if (strlen(task->filename) == 0) {
         task->result_code = -1;
         strncpy(task->error_message, "No filename provided for upload", sizeof(task->error_message) - 1);
-        pthread_mutex_unlock(&task->task_mutex);
-        return;
-    }
-    
-
-    size_t file_size = task->data_size;
-    if (!check_quota_available(task->username, file_size)) {
-        task->result_code = -1;
-        strncpy(task->error_message, "Upload would exceed quota limit", sizeof(task->error_message) - 1);
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
@@ -99,9 +93,6 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
-    update_quota_usage(task->username, (long long)total_received);
     
     
     file_metadata_t metadata;
@@ -242,11 +233,6 @@ void handle_delete_task(task_t *task) {
         release_file_lock(task->username, task->filename);
         pthread_mutex_unlock(&task->task_mutex);
         return;
-    }
-    
-    
-    if (file_size > 0) {
-        update_quota_usage(task->username, -((long long)file_size));
     }
     
     

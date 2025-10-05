@@ -9,7 +9,7 @@ LDFLAGS = -pthread -lssl -lcrypto
 TARGET = dropbox_server
 
 # Source files
-SOURCES = main.c queue_operations.c authentication.c thread_pool.c file_operations.c quota_management.c file_storage.c utilities.c
+SOURCES = main.c queue_operations.c authentication.c thread_pool.c file_operations.c file_storage.c utilities.c
 
 # Object files (derived from source files)
 OBJECTS = $(SOURCES:.c=.o)

@@ -112,28 +112,19 @@ int list_user_files(const char *username, char **file_list, size_t *list_size) {
     
     size_t current_pos = 0;
     struct dirent *entry;
-    user_quota_t *quota = load_user_quota(username);
     
-        
-        if (quota) {
-            current_pos += snprintf(list + current_pos, buffer_size - current_pos,
-                                  "=== File Listing for %s ===\n"
-                                  "Quota: %zu / %zu MB (%d files)\n\n"
-                                  "%-30s %-10s %-20s\n"
-                                  "%-30s %-10s %-20s\n",
-                                  username,
-                                  quota->used_bytes / (1024 * 1024),
-                                  quota->quota_limit_bytes / (1024 * 1024),
-                                  quota->file_count,
-                                  "Filename", "Size", "Modified",
-                                  "--------", "----", "--------");
-            destroy_user_quota(quota);
-        }    while ((entry = readdir(dir)) != NULL) {
+    // Simple header without quota information
+    current_pos += snprintf(list + current_pos, buffer_size - current_pos,
+                          "=== File Listing for %s ===\n\n"
+                          "%-30s %-10s %-20s\n"
+                          "%-30s %-10s %-20s\n",
+                          username,
+                          "Filename", "Size", "Modified",
+                          "--------", "----", "--------");    while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] == '.') continue; 
         
         
-        if (strstr(entry->d_name, METADATA_FILE_SUFFIX) || 
-            strstr(entry->d_name, QUOTA_FILE_SUFFIX)) {
+        if (strstr(entry->d_name, METADATA_FILE_SUFFIX)) {
             continue;
         }
         
