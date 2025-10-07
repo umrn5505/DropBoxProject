@@ -4,15 +4,14 @@
 #include <openssl/sha.h>
 #include <openssl/evp.h>
 
-
+#define MAX_FILE_SIZE_MB 10
 
 void handle_upload_task(task_t *task) {
-    printf("Processing UPLOAD task for file %s (user: %s, pri    }
-    
-    
-    task->result_code = 0;d)\n", 
+    printf("Processing UPLOAD task for file %s (user: %s, priority: %d)\n",
            task->filename, task->username, task->priority);
     
+    task->result_code = 0;
+
     pthread_mutex_lock(&task->task_mutex);
     
     
