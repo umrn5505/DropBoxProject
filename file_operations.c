@@ -65,7 +65,6 @@ void handle_upload_task(task_t *task) {
     
     
     send_response(task->client_socket, "SEND_FILE_DATA\n");
-    printf("DEBUG: Waiting to receive file size from client...\n");
 
     
     file_data = malloc(MAX_FILE_SIZE_MB * 1024 * 1024); 
@@ -78,9 +77,7 @@ void handle_upload_task(task_t *task) {
     }
     
     
-    printf("[SERVER] sizeof(size_t) = %zu\n", sizeof(size_t));
     if (recv_all(task->client_socket, buffer, sizeof(size_t)) != 0) {
-        printf("[SERVER][ERROR] Failed to receive full file size bytes (connection closed or error)\n");
         task->result_code = -1;
         strncpy(task->error_message, "Failed to receive file size", sizeof(task->error_message) - 1);
         free(file_data);
@@ -88,11 +85,9 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    printf("[SERVER] Raw file size bytes received: ");
     for (size_t i = 0; i < sizeof(size_t); ++i) printf("%02x ", (unsigned char)buffer[i]);
     printf("\n");
     size_t expected_size = *((size_t*)buffer);
-    printf("[SERVER] Interpreted file size: %zu\n", expected_size);
     if (expected_size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         task->result_code = -1;
         strncpy(task->error_message, "File too large", sizeof(task->error_message) - 1);
@@ -115,8 +110,6 @@ void handle_upload_task(task_t *task) {
         }
         total_received += bytes_received;
     }
-    printf("DEBUG: Received all file data, total_received=%zu\n", total_received);
-    printf("DEBUG: Before save_file_to_storage: user=%s, filename=%s, data_size=%zu\n", task->username, task->filename, total_received);
     int save_result = save_file_to_storage(task->username, task->filename, file_data, total_received);
     printf("DEBUG: After save_file_to_storage: result=%d\n", save_result);
     if (save_result != 0) {
