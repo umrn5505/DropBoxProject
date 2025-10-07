@@ -17,8 +17,11 @@ OBJECTS = $(SOURCES:.c=.o)
 # Header files
 HEADERS = dropbox_server.h
 
+# Add test client source (standalone)
+TEST_CLIENT_SRC = test_client.c
+
 # Default target
-all: $(TARGET)
+all: $(TARGET) test_client
 
 # Link object files to create executable
 $(TARGET): $(OBJECTS)
@@ -29,9 +32,18 @@ $(TARGET): $(OBJECTS)
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Build test_client
+.test_client_stamp: $(TEST_CLIENT_SRC) $(HEADERS)
+	$(CC) $(CFLAGS) $(TEST_CLIENT_SRC) -o test_client
+	@touch .test_client_stamp
+
+# Explicit target
+.PHONY: test_client
+ test_client: .test_client_stamp
+
 # Clean build artifacts
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET) test_client .test_client_stamp
 	@echo "Clean completed"
 
 # Clean and rebuild

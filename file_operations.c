@@ -6,10 +6,38 @@
 
 #define MAX_FILE_SIZE_MB 10
 
+static int recv_all(int sock, void *buf, size_t len) {
+    size_t total = 0;
+    while (total < len) {
+        ssize_t n = recv(sock, (char*)buf + total, len - total, 0);
+        if (n <= 0) return -1; // connection closed or error
+        total += (size_t)n;
+    }
+    return 0;
+}
+
+void sanitize_filename_inplace(char *name) {
+    if (!name) return;
+    // Extract basename
+    char *last_slash = strrchr(name, '/');
+    if (last_slash && *(last_slash + 1) != '\0') {
+        memmove(name, last_slash + 1, strlen(last_slash + 1) + 1);
+    }
+    // Remove any occurrences of ".." (very basic traversal guard)
+    while (strstr(name, "..")) {
+        char *p = strstr(name, "..");
+        memmove(p, p + 2, strlen(p + 2) + 1);
+    }
+    // If becomes empty, set default
+    if (name[0] == '\0') strcpy(name, "unnamed");
+}
+
 void handle_upload_task(task_t *task) {
     printf("Processing UPLOAD task for file %s (user: %s, priority: %d)\n",
            task->filename, task->username, task->priority);
-    
+    // Sanitize filename early so all subsequent logic (locks, metadata) uses safe form
+    sanitize_filename_inplace(task->filename);
+
     task->result_code = 0;
 
     pthread_mutex_lock(&task->task_mutex);
@@ -50,7 +78,9 @@ void handle_upload_task(task_t *task) {
     }
     
     
-    if (recv(task->client_socket, buffer, sizeof(size_t), 0) != sizeof(size_t)) {
+    printf("[SERVER] sizeof(size_t) = %zu\n", sizeof(size_t));
+    if (recv_all(task->client_socket, buffer, sizeof(size_t)) != 0) {
+        printf("[SERVER][ERROR] Failed to receive full file size bytes (connection closed or error)\n");
         task->result_code = -1;
         strncpy(task->error_message, "Failed to receive file size", sizeof(task->error_message) - 1);
         free(file_data);
@@ -58,8 +88,11 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    printf("DEBUG: Received file size: %zu\n", *((size_t*)buffer));
+    printf("[SERVER] Raw file size bytes received: ");
+    for (size_t i = 0; i < sizeof(size_t); ++i) printf("%02x ", (unsigned char)buffer[i]);
+    printf("\n");
     size_t expected_size = *((size_t*)buffer);
+    printf("[SERVER] Interpreted file size: %zu\n", expected_size);
     if (expected_size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         task->result_code = -1;
         strncpy(task->error_message, "File too large", sizeof(task->error_message) - 1);
