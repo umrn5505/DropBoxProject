@@ -51,6 +51,8 @@ int main() {
     print_usage();
     printf("\n");
     
+    int pending_upload = 0;
+    char pending_filename[BUFFER_SIZE] = {0};
     // Communication loop
     while (1) {
         // Receive server response
@@ -60,9 +62,41 @@ int main() {
             printf("Connection closed by server\n");
             break;
         }
-        
         printf("%s", buffer);
-        
+        // If SEND_FILE_DATA is received and upload is pending, perform upload
+        if (pending_upload && strstr(buffer, "SEND_FILE_DATA")) {
+            FILE *fp = fopen(pending_filename, "rb");
+            if (!fp) {
+                printf("Failed to open file: %s\n", pending_filename);
+                pending_upload = 0;
+                continue;
+            }
+            fseek(fp, 0, SEEK_END);
+            size_t file_size = ftell(fp);
+            fseek(fp, 0, SEEK_SET);
+            if (send(client_socket, &file_size, sizeof(size_t), 0) != sizeof(size_t)) {
+                printf("Failed to send file size\n");
+                fclose(fp);
+                pending_upload = 0;
+                continue;
+            }
+            char file_buf[BUFFER_SIZE];
+            size_t sent = 0;
+            while (sent < file_size) {
+                size_t to_read = (file_size - sent > BUFFER_SIZE) ? BUFFER_SIZE : (file_size - sent);
+                size_t read_bytes = fread(file_buf, 1, to_read, fp);
+                if (read_bytes == 0) break;
+                if (send(client_socket, file_buf, read_bytes, 0) != read_bytes) {
+                    printf("Failed to send file data\n");
+                    break;
+                }
+                sent += read_bytes;
+            }
+            fclose(fp);
+            printf("File upload complete (%zu bytes sent)\n", sent);
+            pending_upload = 0;
+            continue;
+        }
         // Check if server is asking for input
         if (strstr(buffer, "> ") || strstr(buffer, ": ")) {
             // Get user input
@@ -70,22 +104,29 @@ int main() {
             if (fgets(input, sizeof(input), stdin) == NULL) {
                 break;
             }
-            
             // Remove trailing newline
             char *newline = strchr(input, '\n');
             if (newline) *newline = '\0';
-            
             // Handle local commands
             if (strcasecmp(input, "HELP") == 0) {
                 print_usage();
                 continue;
             }
-            
             if (strcasecmp(input, "QUIT") == 0) {
                 send(client_socket, input, strlen(input), 0);
                 break;
             }
-            
+            // Handle UPLOAD command
+            if (strncasecmp(input, "UPLOAD ", 7) == 0) {
+                if (send(client_socket, input, strlen(input), 0) < 0) {
+                    perror("Failed to send command");
+                    break;
+                }
+                strncpy(pending_filename, input + 7, BUFFER_SIZE - 1);
+                pending_upload = 1;
+                continue;
+            }
+
             // Send command to server
             if (send(client_socket, input, strlen(input), 0) < 0) {
                 perror("Failed to send command");
