@@ -29,8 +29,10 @@ static void trim(char *s){
 
 static void show_prompt(){ printf("> "); fflush(stdout); }
 
-static int prompt_at_end(const char *buf) {
-    if(!buf) return 0; size_t len=strlen(buf); while(len>0 && (buf[len-1]=='\n'||buf[len-1]=='\r')) len--; if(len<2) return 0; char a=buf[len-2], b=buf[len-1]; return ((a==':'&& b==' ')||(a=='>'&& b==' ')); }
+static int prompt_at_end(const char *buf) { if(!buf) return 0; size_t len=strlen(buf); while(len>0 && (buf[len-1]=='\n'||buf[len-1]=='\r')) len--; if(len<2) return 0; char a=buf[len-2], b=buf[len-1]; return ((a==':'&& b==' ')||(a=='>'&& b==' ')); }
+
+// New helper: check if file exists and is readable before initiating upload
+static int file_exists_readable(const char *path){ if(!path||!*path) return 0; FILE *f=fopen(path,"rb"); if(!f) return 0; fclose(f); return 1; }
 
 int main() {
     int client_socket;
@@ -76,8 +78,12 @@ int main() {
             if (strstr(buffer, "SEND_FILE_DATA")) { awaiting_file_data = 1; }
             if (awaiting_file_data && pending_upload) {
                 FILE *fp = fopen(pending_filename, "rb");
-                if (!fp) { printf("Failed to open file: %s\n", pending_filename); pending_upload=0; awaiting_file_data=0; }
-                else {
+                if (!fp) {
+                    // Local file vanished after pre-check or became unreadable; abort gracefully.
+                    printf("Error: Local file '%s' no longer accessible. Upload cancelled.\n", pending_filename);
+                    // Consume expected transfer by sending zero size so server doesn't block (optional safer fallback)
+                    size_t zero=0; send(client_socket,&zero,sizeof(size_t),0);
+                } else {
                     fseek(fp,0,SEEK_END); size_t file_size = ftell(fp); fseek(fp,0,SEEK_SET);
                     send(client_socket,&file_size,sizeof(size_t),0);
                     size_t sent=0; char fb[BUFFER_SIZE];
@@ -100,7 +106,13 @@ int main() {
         if(!authenticated){ send(client_socket,input,strlen(input),0); waiting_response=1; continue; }
         if(strcasecmp(input,"HELP")==0){ print_usage(); continue; }
         if(strcasecmp(input,"QUIT")==0){ send(client_socket,input,strlen(input),0); break; }
-        if(strncasecmp(input,"UPLOAD ",7)==0){ strncpy(pending_filename,input+7,BUFFER_SIZE-1); pending_filename[BUFFER_SIZE-1]='\0'; pending_upload=1; send(client_socket,input,strlen(input),0); waiting_response=1; continue; }
+        if(strncasecmp(input,"UPLOAD ",7)==0){
+            const char *fname = input+7; while(*fname==' '||*fname=='\t') fname++;
+            if(strlen(fname)==0){ printf("Error: Missing filename for upload.\n"); continue; }
+            if(!file_exists_readable(fname)) { printf("Error: File '%s' not found or unreadable.\n", fname); continue; }
+            strncpy(pending_filename,fname,BUFFER_SIZE-1); pending_filename[BUFFER_SIZE-1]='\0';
+            pending_upload=1; send(client_socket,input,strlen(input),0); waiting_response=1; continue; }
+        // Future: could add DOWNLOAD handling with binary reception safely.
         send(client_socket,input,strlen(input),0);
         waiting_response=1;
     }
