@@ -1,0 +1,19 @@
+Connected to DropBox Server at 127.0.0.1:8080
+Simple DropBox Client
+Commands:
+  LOGIN <username> <password>    - Login to existing account
+  SIGNUP <username> <password>   - Create new account
+  UPLOAD <filename>              - Upload a file
+  DOWNLOAD <filename>            - Download a file
+  DELETE <filename>              - Delete a file
+  LIST                           - List all files
+  QUIT                           - Exit client
+  HELP                           - Show this help
+
+Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): > LOGIN_SUCCESS: Authentication successful
+Authenticated successfully. Available commands: UPLOAD <filename>, DOWNLOAD <filename>, DELETE <filename>, LIST, QUIT
+> > SEND_FILE_DATA
+File upload complete (47 bytes sent)
+SUCCESS: Operation completed successfully
+> > Client disconnected
