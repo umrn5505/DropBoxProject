@@ -49,7 +49,7 @@ This project implements a robust, thread-safe DropBox-like server architecture i
 ## File Structure
 
 ```
-DropBoxBuild-MF/
+DropBoxProject/
 ├── dropbox_server.h      # Main header with all declarations
 ├── main.c               # Main server implementation and accept loop
 ├── queue_operations.c   # Thread-safe queue implementations
@@ -62,38 +62,72 @@ DropBoxBuild-MF/
 
 ## Compilation & Usage
 
-### Building the Server
+
+### Building the Server and Client
 ```bash
-# Standard build
 make
-
-# Debug build with sanitizers
-make debug
-
-# Thread sanitizer build
-make tsan
-
-# Clean build artifacts
-make clean
 ```
 
 ### Running the Server
 ```bash
-# Run server
 ./dropbox_server
-
-# Or use make target
-make run
 ```
 
-### Testing with Client
+### Running the Client
 ```bash
-# Compile test client
-gcc test_client.c -o test_client
-
-# Run client (in separate terminal)
 ./test_client
 ```
+
+### Testing Workflow
+1. Start the server in one terminal:
+     ```
+     ./dropbox_server
+     ```
+2. Start the client in another terminal:
+     ```
+     ./test_client
+     ```
+3. In the client, perform the following commands:
+     - Sign up:
+         ```
+         SIGNUP testuser password123
+         ```
+     - Upload a file (ensure `upload_test.txt` exists in your directory):
+         ```
+         UPLOAD upload_test.txt
+         ```
+     - List files:
+         ```
+         LIST
+         ```
+     - Download the file:
+         ```
+         DOWNLOAD upload_test.txt
+         ```
+     - Delete the file:
+         ```
+         DELETE upload_test.txt
+         ```
+     - List files again to confirm deletion:
+         ```
+         LIST
+         ```
+     - Quit:
+         ```
+         QUIT
+         ```
+
+### Valgrind Memory Leak Check
+```bash
+valgrind --leak-check=full --track-origins=yes ./dropbox_server
+```
+- Run the server with Valgrind, perform the above client operations, then stop the server with `Ctrl+C` to view the memory report.
+
+### Additional Notes
+- All commands should be run from a WSL/Linux terminal.
+- The client and server communicate over TCP on port 8080.
+- The file `upload_test.txt` must exist in the client directory before uploading.
+- No additional configuration is required for Phase 1.
 
 ## Configuration
 
@@ -233,12 +267,12 @@ make tsan
 ## Architecture Validation
 
 This implementation ensures:
-- ✅ **No Race Conditions**: All shared data protected by mutexes
-- ✅ **No Memory Leaks**: All resources properly cleaned up
-- ✅ **Thread Safety**: Proper synchronization throughout
-- ✅ **Graceful Shutdown**: Signal handling and resource cleanup
-- ✅ **Scalability**: Configurable thread pool sizes
-- ✅ **Maintainability**: Clean separation of concerns
-- ✅ **Testability**: Comprehensive error handling and logging
+- **No Race Conditions**: All shared data protected by mutexes
+- **No Memory Leaks**: All resources properly cleaned up
+- **Thread Safety**: Proper synchronization throughout
+- **Graceful Shutdown**: Signal handling and resource cleanup
+- **Scalability**: Configurable thread pool sizes
+- **Maintainability**: Clean separation of concerns
+- **Testability**: Comprehensive error handling and logging
 
 This foundation provides a robust base for implementing the file operation features while maintaining thread safety and preventing race conditions.
