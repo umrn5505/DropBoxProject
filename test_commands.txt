@@ -1,0 +1,9 @@
+SIGNUP testuser1 password123
+UPLOAD high_priority.txt --high
+UPLOAD medium_priority.txt --medium
+UPLOAD low_priority.txt --low
+LIST
+DOWNLOAD high_priority.txt --high
+DELETE low_priority.txt --low
+LIST
+QUIT

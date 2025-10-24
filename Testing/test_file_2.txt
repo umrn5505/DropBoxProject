@@ -1,0 +1,1 @@
+Test file for client 2 - slightly larger content for testing

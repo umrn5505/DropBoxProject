@@ -66,9 +66,10 @@ void* client_thread_function(void *arg) {
             
             printf("Received command from %s (socket %d): %s\n", username, client_socket, buffer);
             
-            // Parse the command
-            if (parse_command(buffer, command, filename) != 0) {
-                send_response(client_socket, "ERROR: Invalid command. Use UPLOAD <filename>, DOWNLOAD <filename>, DELETE <filename>, LIST, or QUIT\n> ");
+            // Parse the command with priority support
+            int priority = PRIORITY_MEDIUM;
+            if (parse_priority_command(buffer, command, filename, &priority) != 0) {
+                send_response(client_socket, "ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWNLOAD <filename> [--priority=high|medium|low], DELETE <filename> [--priority=high|medium|low], LIST [--priority=high|medium|low], or QUIT\n> ");
                 continue;
             }
             
@@ -94,8 +95,8 @@ void* client_thread_function(void *arg) {
                 continue;
             }
             
-            // Create and submit task to worker thread pool
-            task_t *task = create_task(task_type, client_socket, username, buffer);
+            // Create and submit priority task to worker thread pool
+            task_t *task = create_priority_task(task_type, client_socket, username, buffer, priority);
             if (!task) {
                 send_response(client_socket, "ERROR: Failed to create task\n> ");
                 continue;
@@ -105,14 +106,15 @@ void* client_thread_function(void *arg) {
             strncpy(task->filename, filename, MAX_FILENAME - 1);
             task->filename[MAX_FILENAME - 1] = '\0';
             
-            // Enqueue task and wait for completion
-            if (enqueue_task(server->task_queue, task) != 0) {
+            // Enqueue task with priority and wait for completion
+            if (enqueue_priority_task(server->task_queue, task) != 0) {
                 send_response(client_socket, "ERROR: Failed to enqueue task\n> ");
                 destroy_task(task);
                 continue;
             }
             
-            printf("Task submitted by %s (socket %d), waiting for completion...\n", username, client_socket);
+            printf("Priority task submitted by %s (socket %d, priority %d), waiting for completion...\n", 
+                   username, client_socket, priority);
             
             // Wait for task completion using condition variable
             pthread_mutex_lock(&task->task_mutex);
@@ -237,71 +239,5 @@ void* worker_thread_function(void *arg) {
     return NULL;
 }
 
-// Placeholder task handlers (to be implemented by your colleagues)
-void handle_upload_task(task_t *task) {
-    // Placeholder implementation - to be completed by colleagues
-    printf("PLACEHOLDER: Processing UPLOAD task for file %s (user: %s)\n", 
-           task->filename, task->username);
-    
-    // Simulate work
-    struct timespec ts = {0, 100000000}; // 100ms in nanoseconds
-    nanosleep(&ts, NULL);
-    
-    pthread_mutex_lock(&task->task_mutex);
-    task->result_code = 0;
-    strncpy(task->error_message, "", sizeof(task->error_message));
-    pthread_mutex_unlock(&task->task_mutex);
-}
-
-void handle_download_task(task_t *task) {
-    // Placeholder implementation - to be completed by colleagues
-    printf("PLACEHOLDER: Processing DOWNLOAD task for file %s (user: %s)\n", 
-           task->filename, task->username);
-    
-    // Simulate work
-    struct timespec ts = {0, 100000000}; // 100ms in nanoseconds
-    nanosleep(&ts, NULL);
-    
-    pthread_mutex_lock(&task->task_mutex);
-    task->result_code = 0;
-    strncpy(task->error_message, "", sizeof(task->error_message));
-    pthread_mutex_unlock(&task->task_mutex);
-}
-
-void handle_delete_task(task_t *task) {
-    // Placeholder implementation - to be completed by colleagues
-    printf("PLACEHOLDER: Processing DELETE task for file %s (user: %s)\n", 
-           task->filename, task->username);
-    
-    // Simulate work
-    struct timespec ts = {0, 100000000}; // 100ms in nanoseconds
-    nanosleep(&ts, NULL);
-    
-    pthread_mutex_lock(&task->task_mutex);
-    task->result_code = 0;
-    strncpy(task->error_message, "", sizeof(task->error_message));
-    pthread_mutex_unlock(&task->task_mutex);
-}
-
-void handle_list_task(task_t *task) {
-    // Placeholder implementation - to be completed by colleagues
-    printf("PLACEHOLDER: Processing LIST task (user: %s)\n", task->username);
-    
-    // Simulate work and create result
-    struct timespec ts = {0, 100000000}; // 100ms in nanoseconds
-    nanosleep(&ts, NULL);
-    
-    pthread_mutex_lock(&task->task_mutex);
-    task->result_code = 0;
-    
-    // Create a sample file list
-    char *result = malloc(BUFFER_SIZE);
-    if (result) {
-        snprintf(result, BUFFER_SIZE, "Files in your directory:\n(placeholder - to be implemented)\n");
-        task->result_data = result;
-        task->result_size = strlen(result);
-    }
-    
-    strncpy(task->error_message, "", sizeof(task->error_message));
-    pthread_mutex_unlock(&task->task_mutex);
-}
+// Note: Task handler functions are now implemented in file_operations.c
+// The declarations are in dropbox_server.h and implementations are in file_operations.c
