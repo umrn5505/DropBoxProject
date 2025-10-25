@@ -57,6 +57,12 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
+<<<<<<< HEAD
+=======
+
+    // TEMPORARY: Artificial delay to demonstrate lock contention and colored output
+    sleep(5);
+>>>>>>> 41fcdf1d0a6da8a0d825f87123969c4464751410
     
     
     char buffer[BUFFER_SIZE];
