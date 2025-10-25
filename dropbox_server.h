@@ -197,4 +197,9 @@ char* calculate_sha256(const char *data, size_t data_size);
 
 extern server_context_t *g_server_context;
 
-#endif 
+// Server port (fixed to PORT defined above, default 8080)
+extern int g_server_port;
+
+void cleanup_user_mutexes();
+
+#endif

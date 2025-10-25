@@ -76,50 +76,70 @@ void destroy_client_queue(client_queue_t *queue) {
 
 int enqueue_client(client_queue_t *queue, int socket_fd) {
     if (!queue) return -1;
-    
+
     pthread_mutex_lock(&queue->mutex);
-    
+
     // Wait while queue is full
     while (queue->count >= queue->capacity) {
+        // If shutdown was signaled, abort enqueue
+        if (g_server_context) {
+            pthread_mutex_lock(&g_server_context->shutdown_mutex);
+            int shutdown = g_server_context->shutdown_flag;
+            pthread_mutex_unlock(&g_server_context->shutdown_mutex);
+            if (shutdown) {
+                pthread_mutex_unlock(&queue->mutex);
+                return -1;
+            }
+        }
         printf("Client queue full, waiting...\n");
         pthread_cond_wait(&queue->not_full, &queue->mutex);
     }
-    
+
     // Add socket to queue
     queue->sockets[queue->rear] = socket_fd;
     queue->rear = (queue->rear + 1) % queue->capacity;
     queue->count++;
-    
+
     printf("Client socket %d enqueued, queue size: %d\n", socket_fd, queue->count);
-    
+
     // Signal that queue is not empty
     pthread_cond_signal(&queue->not_empty);
     pthread_mutex_unlock(&queue->mutex);
-    
+
     return 0;
 }
 
 int dequeue_client(client_queue_t *queue) {
     if (!queue) return -1;
-    
+
     pthread_mutex_lock(&queue->mutex);
-    
+
     // Wait while queue is empty
     while (queue->count == 0) {
+        // If shutdown was signaled, return immediately
+        if (g_server_context) {
+            pthread_mutex_lock(&g_server_context->shutdown_mutex);
+            int shutdown = g_server_context->shutdown_flag;
+            pthread_mutex_unlock(&g_server_context->shutdown_mutex);
+            if (shutdown) {
+                pthread_mutex_unlock(&queue->mutex);
+                return -1;
+            }
+        }
         pthread_cond_wait(&queue->not_empty, &queue->mutex);
     }
-    
+
     // Remove socket from queue
     int socket_fd = queue->sockets[queue->front];
     queue->front = (queue->front + 1) % queue->capacity;
     queue->count--;
-    
+
     printf("Client socket %d dequeued, queue size: %d\n", socket_fd, queue->count);
-    
+
     // Signal that queue is not full
     pthread_cond_signal(&queue->not_full);
     pthread_mutex_unlock(&queue->mutex);
-    
+
     return socket_fd;
 }
 
@@ -188,15 +208,25 @@ void destroy_task_queue(task_queue_t *queue) {
 
 int enqueue_task(task_queue_t *queue, task_t *task) {
     if (!queue || !task) return -1;
-    
+
     pthread_mutex_lock(&queue->mutex);
-    
+
     // Wait while queue is full
     while (queue->count >= queue->capacity) {
+        // If shutdown was signaled, abort enqueue
+        if (g_server_context) {
+            pthread_mutex_lock(&g_server_context->shutdown_mutex);
+            int shutdown = g_server_context->shutdown_flag;
+            pthread_mutex_unlock(&g_server_context->shutdown_mutex);
+            if (shutdown) {
+                pthread_mutex_unlock(&queue->mutex);
+                return -1;
+            }
+        }
         printf("Task queue full, waiting...\n");
         pthread_cond_wait(&queue->not_full, &queue->mutex);
     }
-    
+
     // Add task to queue (FIFO)
     task->next = NULL;
     if (queue->tail) {
@@ -206,26 +236,36 @@ int enqueue_task(task_queue_t *queue, task_t *task) {
     }
     queue->tail = task;
     queue->count++;
-    
+
     printf("Task enqueued (type: %d), queue size: %d\n", task->type, queue->count);
-    
+
     // Signal that queue is not empty
     pthread_cond_signal(&queue->not_empty);
     pthread_mutex_unlock(&queue->mutex);
-    
+
     return 0;
 }
 
 task_t* dequeue_task(task_queue_t *queue) {
     if (!queue) return NULL;
-    
+
     pthread_mutex_lock(&queue->mutex);
-    
+
     // Wait while queue is empty
     while (queue->count == 0) {
+        // If shutdown was signaled, return immediately
+        if (g_server_context) {
+            pthread_mutex_lock(&g_server_context->shutdown_mutex);
+            int shutdown = g_server_context->shutdown_flag;
+            pthread_mutex_unlock(&g_server_context->shutdown_mutex);
+            if (shutdown) {
+                pthread_mutex_unlock(&queue->mutex);
+                return NULL;
+            }
+        }
         pthread_cond_wait(&queue->not_empty, &queue->mutex);
     }
-    
+
     // Remove task from queue (FIFO)
     task_t *task = queue->head;
     queue->head = task->next;
@@ -234,13 +274,13 @@ task_t* dequeue_task(task_queue_t *queue) {
     }
     task->next = NULL;
     queue->count--;
-    
+
     printf("Task dequeued (type: %d), queue size: %d\n", task->type, queue->count);
-    
+
     // Signal that queue is not full
     pthread_cond_signal(&queue->not_full);
     pthread_mutex_unlock(&queue->mutex);
-    
+
     return task;
 }
 
@@ -346,15 +386,26 @@ int receive_data(int socket_fd, char *buffer, size_t buffer_size) {
 
 void signal_shutdown(server_context_t *server) {
     if (!server) return;
-    
+
     pthread_mutex_lock(&server->shutdown_mutex);
     server->shutdown_flag = 1;
+    // Save and close server socket to wake accept()
+    if (server->server_socket >= 0) {
+        close(server->server_socket);
+        server->server_socket = -1;
+    }
     pthread_mutex_unlock(&server->shutdown_mutex);
-    
+
     // Wake up all waiting threads
-    pthread_cond_broadcast(&server->client_queue->not_empty);
-    pthread_cond_broadcast(&server->task_queue->not_empty);
-    
+    if (server->client_queue) {
+        pthread_cond_broadcast(&server->client_queue->not_empty);
+        pthread_cond_broadcast(&server->client_queue->not_full);
+    }
+    if (server->task_queue) {
+        pthread_cond_broadcast(&server->task_queue->not_empty);
+        pthread_cond_broadcast(&server->task_queue->not_full);
+    }
+
     printf("Shutdown signal sent to all threads\n");
 }
 

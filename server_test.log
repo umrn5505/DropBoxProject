@@ -1,0 +1,65 @@
+Failed to bind server socket: Address already in use
+Starting DropBox Server...
+Client queue created with capacity: 50
+Task queue created with capacity: 50
+Creating client thread pool (10 threads)...
+Client thread 125862989002432 started
+Client thread 125862980609728 started
+Client thread 125862963824320 started
+Client thread 125862972217024 started
+Client thread 125862955431616 started
+Client thread 125862947038912 started
+Client thread 125862938646208 started
+Client thread 125862930253504 started
+Client thread 125862921860800 started
+Creating worker thread pool (5 threads)...
+Client thread 125862913468096 started
+Worker thread 125862905075392 started
+Worker thread 125862896682688 started
+Worker thread 125862888289984 started
+Worker thread 125862879897280 started
+Server initialized successfully
+Worker thread 125862871504576 started
+Cleaning up server resources...
+Client thread 125862989002432 shutting down
+Client thread 125862980609728 shutting down
+Client thread 125862989002432 exiting
+Client thread 125862980609728 exiting
+Client thread 125862963824320 shutting down
+Client thread 125862963824320 exiting
+Client thread 125862972217024 shutting down
+Client thread 125862972217024 exiting
+Client thread 125862955431616 shutting down
+Client thread 125862955431616 exiting
+Client thread 125862947038912 shutting down
+Client thread 125862938646208 shutting down
+Client thread 125862938646208 exiting
+Client thread 125862947038912 exiting
+Shutdown signal sent to all threads
+Waiting for client threads to finish...
+Client thread 125862921860800 shutting down
+Client thread 125862921860800 exiting
+Client thread 125862930253504 shutting down
+Client thread 125862930253504 exiting
+Client thread 125862913468096 shutting down
+Client thread 125862913468096 exiting
+Worker thread 125862896682688 shutting down
+Worker thread 125862896682688 exiting
+Worker thread 125862905075392 shutting down
+Worker thread 125862905075392 exiting
+Worker thread 125862888289984 shutting down
+Worker thread 125862888289984 exiting
+Worker thread 125862879897280 shutting down
+Worker thread 125862879897280 exiting
+Worker thread 125862871504576 shutting down
+Worker thread 125862871504576 exiting
+Sending shutdown signals to worker threads...
+Task enqueued (type: 4), queue size: 1
+Task enqueued (type: 4), queue size: 2
+Task enqueued (type: 4), queue size: 3
+Task enqueued (type: 4), queue size: 4
+Task enqueued (type: 4), queue size: 5
+Waiting for worker threads to finish...
+Client queue destroyed
+Task queue destroyed
+Server cleanup completed

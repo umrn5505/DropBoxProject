@@ -21,7 +21,7 @@ HEADERS = dropbox_server.h
 TEST_CLIENT_SRC = test_client.c
 
 # Default target
-all: $(TARGET) test_client
+all: $(TARGET)
 
 # Link object files to create executable
 $(TARGET): $(OBJECTS)
@@ -32,18 +32,23 @@ $(TARGET): $(OBJECTS)
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Build test_client
-.test_client_stamp: $(TEST_CLIENT_SRC) $(HEADERS)
-	$(CC) $(CFLAGS) $(TEST_CLIENT_SRC) -o test_client
-	@touch .test_client_stamp
-
-# Explicit target
+# Optional test client build (only if you want the client built on this platform)
 .PHONY: test_client
- test_client: .test_client_stamp
+test_client:
+	@echo "Note: test_client may be platform-specific. Building if possible..."
+	$(CC) $(CFLAGS) $(TEST_CLIENT_SRC) -o test_client || true
+
+# Build concurrency test
+tests/concurrency_test: tests/concurrency_test.c
+	$(CC) $(CFLAGS) tests/concurrency_test.c -o tests/concurrency_test
+
+# Build full integration test
+tests/full_integration_test: tests/full_integration_test.c
+	$(CC) $(CFLAGS) tests/full_integration_test.c -o tests/full_integration_test
 
 # Clean build artifacts
 clean:
-	rm -f $(OBJECTS) $(TARGET) test_client .test_client_stamp
+	rm -f $(OBJECTS) $(TARGET) test_client .test_client_stamp tests/concurrency_test tests/full_integration_test
 	@echo "Clean completed"
 
 # Clean and rebuild
@@ -85,4 +90,4 @@ help:
 	@echo "  help      - Show this help message"
 
 # Phony targets
-.PHONY: all clean rebuild run debug valgrind tsan install-deps help
+.PHONY: all clean rebuild run debug valgrind tsan install-deps help run-concurrency valgrind-test tsan-test run-full-integration valgrind-full tsan-full

@@ -41,39 +41,28 @@ void handle_upload_task(task_t *task) {
     task->result_code = 0;
 
     pthread_mutex_lock(&task->task_mutex);
-    
-    
+
     if (strlen(task->filename) == 0) {
         task->result_code = -1;
         strncpy(task->error_message, "No filename provided for upload", sizeof(task->error_message) - 1);
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
+
     if (acquire_file_lock(task->username, task->filename) != 0) {
         task->result_code = -1;
         strncpy(task->error_message, "File is currently being accessed by another operation", sizeof(task->error_message) - 1);
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-<<<<<<< HEAD
-=======
 
-    // TEMPORARY: Artificial delay to demonstrate lock contention and colored output
-    sleep(5);
->>>>>>> 41fcdf1d0a6da8a0d825f87123969c4464751410
-    
-    
     char buffer[BUFFER_SIZE];
     size_t total_received = 0;
     char *file_data = NULL;
-    
-    
+
     send_response(task->client_socket, "SEND_FILE_DATA\n");
 
-    
-    file_data = malloc(MAX_FILE_SIZE_MB * 1024 * 1024); 
+    file_data = malloc(MAX_FILE_SIZE_MB * 1024 * 1024);
     if (!file_data) {
         task->result_code = -1;
         strncpy(task->error_message, "Memory allocation failed", sizeof(task->error_message) - 1);
@@ -81,8 +70,7 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
+
     if (recv_all(task->client_socket, buffer, sizeof(size_t)) != 0) {
         task->result_code = -1;
         strncpy(task->error_message, "Failed to receive file size", sizeof(task->error_message) - 1);
@@ -102,8 +90,7 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
+
     while (total_received < expected_size) {
         ssize_t bytes_received = recv(task->client_socket, file_data + total_received, expected_size - total_received, 0);
         if (bytes_received <= 0) {
@@ -126,32 +113,29 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
+
     file_metadata_t metadata;
     strncpy(metadata.filename, task->filename, MAX_FILENAME - 1);
     metadata.filename[MAX_FILENAME - 1] = '\0';
     metadata.file_size = total_received;
     metadata.created_time = time(NULL);
     metadata.modified_time = metadata.created_time;
-    
-    
+
     char *checksum = calculate_sha256(file_data, total_received);
     if (checksum) {
         strncpy(metadata.checksum, checksum, sizeof(metadata.checksum) - 1);
         metadata.checksum[sizeof(metadata.checksum) - 1] = '\0';
         free(checksum);
     }
-    
+
     save_file_metadata(task->username, &metadata);
-    
-    
+
     task->result_code = 0;
     char success_msg[256];
     snprintf(success_msg, sizeof(success_msg), "File '%s' uploaded successfully (%zu bytes)", 
              task->filename, total_received);
     strncpy(task->error_message, success_msg, sizeof(task->error_message) - 1);
-    
+
     free(file_data);
     release_file_lock(task->username, task->filename);
     pthread_mutex_unlock(&task->task_mutex);

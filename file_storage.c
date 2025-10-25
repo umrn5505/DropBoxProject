@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <errno.h>
 
 #define METADATA_FILE_SUFFIX ".meta"
 #define USER_QUOTA_META_SUFFIX ".quota.meta"
@@ -15,7 +17,63 @@ typedef struct {
     size_t used_bytes;
 } user_quota_t;
 
-// Load user quota metadata
+// Simple per-user mutex table to serialize metadata/quota updates
+#define MAX_USER_MUTEXES 256
+static pthread_mutex_t user_mutexes_table_mutex = PTHREAD_MUTEX_INITIALIZER;
+static struct {
+    char username[128];
+    pthread_mutex_t mutex;
+    int used;
+} user_mutexes[MAX_USER_MUTEXES];
+
+static pthread_mutex_t *get_user_mutex(const char *username) {
+    if (!username) return NULL;
+    pthread_mutex_lock(&user_mutexes_table_mutex);
+    for (int i = 0; i < MAX_USER_MUTEXES; ++i) {
+        if (user_mutexes[i].used && strcmp(user_mutexes[i].username, username) == 0) {
+            pthread_mutex_unlock(&user_mutexes_table_mutex);
+            return &user_mutexes[i].mutex;
+        }
+    }
+    // find free slot
+    for (int i = 0; i < MAX_USER_MUTEXES; ++i) {
+        if (!user_mutexes[i].used) {
+            strncpy(user_mutexes[i].username, username, sizeof(user_mutexes[i].username) - 1);
+            user_mutexes[i].username[sizeof(user_mutexes[i].username) - 1] = '\0';
+            pthread_mutex_init(&user_mutexes[i].mutex, NULL);
+            user_mutexes[i].used = 1;
+            pthread_mutex_unlock(&user_mutexes_table_mutex);
+            return &user_mutexes[i].mutex;
+        }
+    }
+    pthread_mutex_unlock(&user_mutexes_table_mutex);
+    return NULL; // table full
+}
+
+static int atomic_write_file(const char *final_path, const char *buf, size_t len) {
+    if (!final_path) return -1;
+    char tmp_path[1024];
+    snprintf(tmp_path, sizeof(tmp_path), "%s.tmp", final_path);
+    FILE *f = fopen(tmp_path, "wb");
+    if (!f) return -1;
+    size_t w = fwrite(buf, 1, len, f);
+    if (w != len) {
+        fclose(f);
+        unlink(tmp_path);
+        return -1;
+    }
+    fflush(f);
+    int fd = fileno(f);
+    if (fd >= 0) fsync(fd);
+    fclose(f);
+    if (rename(tmp_path, final_path) != 0) {
+        unlink(tmp_path);
+        return -1;
+    }
+    return 0;
+}
+
+// Load user quota metadata (no locking; callers that modify should lock per-user mutex)
 int load_user_quota(const char *username, user_quota_t *quota) {
     char quota_path[512];
     snprintf(quota_path, sizeof(quota_path), "storage/%s%s", username, USER_QUOTA_META_SUFFIX);
@@ -25,37 +83,53 @@ int load_user_quota(const char *username, user_quota_t *quota) {
         quota->used_bytes = 0;
         return 0;
     }
-    fscanf(file, "%zu\n%zu\n", &quota->quota_limit, &quota->used_bytes);
+    if (fscanf(file, "%zu\n%zu\n", &quota->quota_limit, &quota->used_bytes) != 2) {
+        // fallback to defaults
+        quota->quota_limit = USER_QUOTA_MB * 1024 * 1024;
+        quota->used_bytes = 0;
+    }
     fclose(file);
     return 0;
 }
 
-// Save user quota metadata
+// Save user quota metadata atomically
 int save_user_quota(const char *username, const user_quota_t *quota) {
+    if (!username || !quota) return -1;
     char quota_path[512];
     snprintf(quota_path, sizeof(quota_path), "storage/%s%s", username, USER_QUOTA_META_SUFFIX);
-    FILE *file = fopen(quota_path, "w");
-    if (!file) return -1;
-    fprintf(file, "%zu\n%zu\n", quota->quota_limit, quota->used_bytes);
-    fclose(file);
-    return 0;
+    char buf[256];
+    int len = snprintf(buf, sizeof(buf), "%zu\n%zu\n", quota->quota_limit, quota->used_bytes);
+    if (len < 0 || (size_t)len >= sizeof(buf)) return -1;
+    return atomic_write_file(quota_path, buf, (size_t)len);
 }
 
-// Update quota on file upload
+// Update quota on file upload (locks per-user)
 int update_quota_on_upload(const char *username, size_t file_size) {
+    if (!username) return -1;
+    pthread_mutex_t *m = get_user_mutex(username);
+    if (!m) return -1;
+    pthread_mutex_lock(m);
     user_quota_t quota;
     load_user_quota(username, &quota);
     quota.used_bytes += file_size;
-    return save_user_quota(username, &quota);
+    int res = save_user_quota(username, &quota);
+    pthread_mutex_unlock(m);
+    return res;
 }
 
-// Update quota on file delete
+// Update quota on file delete (locks per-user)
 int update_quota_on_delete(const char *username, size_t file_size) {
+    if (!username) return -1;
+    pthread_mutex_t *m = get_user_mutex(username);
+    if (!m) return -1;
+    pthread_mutex_lock(m);
     user_quota_t quota;
     load_user_quota(username, &quota);
     if (quota.used_bytes >= file_size) quota.used_bytes -= file_size;
     else quota.used_bytes = 0;
-    return save_user_quota(username, &quota);
+    int res = save_user_quota(username, &quota);
+    pthread_mutex_unlock(m);
+    return res;
 }
 
 // Base64 alphabet
@@ -75,14 +149,18 @@ static int base64_encode(const unsigned char *in, size_t in_len, char **out, siz
         uint32_t triple = (octet_a << 16) | (octet_b << 8) | octet_c;
         enc[j++] = b64_table[(triple >> 18) & 0x3F];
         enc[j++] = b64_table[(triple >> 12) & 0x3F];
-        enc[j++] = (i - 1 > in_len) ? '=' : b64_table[(triple >> 6) & 0x3F];
-        enc[j++] = (i > in_len) ? '=' : b64_table[triple & 0x3F];
+        enc[j++] = b64_table[(triple >> 6) & 0x3F];
+        enc[j++] = b64_table[triple & 0x3F];
     }
-    // Fix padding logic for leftovers
+    // padding
     size_t mod = in_len % 3;
     if (mod) {
-        enc[enc_len - 1] = '=';
-        if (mod == 1) enc[enc_len - 2] = '=';
+        if (mod == 1) {
+            enc[enc_len - 1] = '=';
+            enc[enc_len - 2] = '=';
+        } else if (mod == 2) {
+            enc[enc_len - 1] = '=';
+        }
     }
     enc[enc_len] = '\0';
     *out = enc;
@@ -139,16 +217,24 @@ int save_file_to_storage(const char *username, const char *filename, const char 
     if (stat("storage", &st)==-1 && mkdir("storage",0700)!=0) return -1;
     if (stat(user_dir,&st)==-1 && mkdir(user_dir,0700)!=0) return -1;
     char file_path[768]; snprintf(file_path,sizeof(file_path),"%s/%s", user_dir, filename);
-    FILE *file = fopen(file_path, "wb"); if (!file) return -1;
 
     // Base64 encode
     char *b64 = NULL; size_t b64_len = 0;
-    if (base64_encode((const unsigned char*)data, data_size, &b64, &b64_len) != 0) { fclose(file); return -1; }
-    size_t written = fwrite(b64, 1, b64_len, file);
-    free(b64); fclose(file);
-    int result = (written == b64_len) ? 0 : -1;
-    if (result == 0) update_quota_on_upload(username, data_size); // charge original size
-    return result;
+    if (base64_encode((const unsigned char*)data, data_size, &b64, &b64_len) != 0) { return -1; }
+
+    // Write atomically to temp file and rename
+    int write_res = atomic_write_file(file_path, b64, b64_len);
+    free(b64);
+    if (write_res != 0) return -1;
+
+    // update quota under per-user mutex
+    if (update_quota_on_upload(username, data_size) != 0) {
+        // Attempt to remove file if quota update fails
+        unlink(file_path);
+        return -1;
+    }
+
+    return 0;
 }
 
 int load_file_from_storage(const char *username, const char *filename, char **data, size_t *data_size) {
@@ -177,13 +263,20 @@ int delete_file_from_storage(const char *username, const char *filename) {
     
     struct stat st;
     size_t file_size = 0;
-    if (stat(file_path, &st) == 0 && S_ISREG(st.st_mode)) file_size = st.st_size;
+    if (stat(file_path, &st) == 0 && S_ISREG(st.st_mode)) file_size = st.st_size; // stored size (base64)
+    // Before unlinking, compute original data size if possible by loading metadata file if exists
+    file_metadata_t *m = load_file_metadata(username, filename);
+    size_t orig_size = 0;
+    if (m) { orig_size = m->file_size; destroy_file_metadata(m); }
+
     if (unlink(file_path) != 0) return -1;
     
     char meta_path[768];
     snprintf(meta_path, sizeof(meta_path), "storage/%s/%s%s", username, filename, METADATA_FILE_SUFFIX);
     unlink(meta_path);
-    update_quota_on_delete(username, file_size);
+    // update quota using original size if present, else best-effort using stored size
+    if (orig_size > 0) update_quota_on_delete(username, orig_size);
+    else update_quota_on_delete(username, file_size);
     return 0;
 }
 
@@ -293,19 +386,22 @@ int save_file_metadata(const char *username, const file_metadata_t *metadata) {
     char meta_path[768];
     snprintf(meta_path, sizeof(meta_path), "storage/%s/%s%s", 
              username, metadata->filename, METADATA_FILE_SUFFIX);
-    
-    FILE *file = fopen(meta_path, "w");
-    if (!file) return -1;
-    
-    fprintf(file, "%s\n%zu\n%ld\n%ld\n%s\n",
+
+    char buf[1024];
+    int len = snprintf(buf, sizeof(buf), "%s\n%zu\n%ld\n%ld\n%s\n",
             metadata->filename,
             metadata->file_size,
             metadata->created_time,
             metadata->modified_time,
             metadata->checksum);
-    
-    fclose(file);
-    return 0;
+    if (len < 0 || (size_t)len >= sizeof(buf)) return -1;
+
+    // protect per-user metadata writes
+    pthread_mutex_t *m = get_user_mutex(username);
+    if (m) pthread_mutex_lock(m);
+    int res = atomic_write_file(meta_path, buf, (size_t)len);
+    if (m) pthread_mutex_unlock(m);
+    return res;
 }
 
 file_metadata_t* load_file_metadata(const char *username, const char *filename) {
@@ -343,4 +439,16 @@ void destroy_file_metadata(file_metadata_t *metadata) {
     if (metadata) {
         free(metadata);
     }
+}
+
+void cleanup_user_mutexes() {
+    pthread_mutex_lock(&user_mutexes_table_mutex);
+    for (int i = 0; i < MAX_USER_MUTEXES; ++i) {
+        if (user_mutexes[i].used) {
+            pthread_mutex_destroy(&user_mutexes[i].mutex);
+            user_mutexes[i].used = 0;
+            user_mutexes[i].username[0] = '\0';
+        }
+    }
+    pthread_mutex_unlock(&user_mutexes_table_mutex);
 }
