@@ -243,8 +243,6 @@ int main() {
     // Set up signal handlers for graceful shutdown
     signal(SIGINT, signal_handler);   // Ctrl+C
     signal(SIGTERM, signal_handler);  // Termination request
-    // Prevent server from terminating when trying to write to a closed socket
-    signal(SIGPIPE, SIG_IGN);
 
     // Server port is fixed to PORT (defined in dropbox_server.h as 8080)
     // We intentionally ignore any DROPBOX_PORT env to always run on the known port.
