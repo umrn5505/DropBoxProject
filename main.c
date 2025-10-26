@@ -2,6 +2,8 @@
 
 // Global server context for signal handling
 server_context_t *g_server_context = NULL;
+// runtime-overridable port
+int g_server_port = PORT;
 
 // Signal handler for graceful shutdown
 void signal_handler(int signum) {
@@ -59,6 +61,9 @@ void cleanup_server(server_context_t *server) {
         destroy_task_queue(server->task_queue);
     }
     
+    // Cleanup per-user mutexes and other global resources
+    cleanup_user_mutexes();
+
     // Destroy shutdown mutex
     pthread_mutex_destroy(&server->shutdown_mutex);
     
@@ -149,7 +154,7 @@ int create_server_socket() {
         perror("Failed to create server socket");
         return -1;
     }
-    
+
     // Set socket options to reuse address
     int opt = 1;
     if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
@@ -157,29 +162,29 @@ int create_server_socket() {
         close(server_socket);
         return -1;
     }
-    
+
     // Set up server address
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = htons(PORT);
-    
+    server_addr.sin_port = htons(g_server_port);
+
     // Bind socket to address
     if (bind(server_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Failed to bind server socket");
         close(server_socket);
         return -1;
     }
-    
+
     // Start listening for connections
     if (listen(server_socket, MAX_CLIENTS) < 0) {
         perror("Failed to listen on server socket");
         close(server_socket);
         return -1;
     }
-    
-    printf("Server listening on port %d\n", PORT);
+
+    printf("Server listening on port %d\n", g_server_port);
     return server_socket;
 }
 
@@ -187,25 +192,25 @@ int create_server_socket() {
 void run_accept_loop(server_context_t *server) {
     struct sockaddr_in client_addr;
     socklen_t client_addr_len = sizeof(client_addr);
-    
+
     printf("Starting main accept loop...\n");
-    
+
     while (1) {
         // Check for shutdown signal
         pthread_mutex_lock(&server->shutdown_mutex);
         int shutdown = server->shutdown_flag;
         pthread_mutex_unlock(&server->shutdown_mutex);
-        
+
         if (shutdown) {
             printf("Accept loop received shutdown signal\n");
             break;
         }
-        
+
         // Accept new client connection
         int client_socket = accept(server->server_socket, 
                                  (struct sockaddr*)&client_addr, 
                                  &client_addr_len);
-        
+
         if (client_socket < 0) {
             if (errno == EINTR) {
                 // Interrupted by signal, check shutdown flag
@@ -214,13 +219,13 @@ void run_accept_loop(server_context_t *server) {
             perror("Failed to accept client connection");
             continue;
         }
-        
+
         // Get client IP address for logging
         char client_ip[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &client_addr.sin_addr, client_ip, INET_ADDRSTRLEN);
         printf("Accepted connection from %s:%d (socket %d)\n", 
                client_ip, ntohs(client_addr.sin_port), client_socket);
-        
+
         // Enqueue client socket for processing by client threads
         if (enqueue_client(server->client_queue, client_socket) != 0) {
             printf("Failed to enqueue client socket %d - closing connection\n", client_socket);
@@ -228,49 +233,55 @@ void run_accept_loop(server_context_t *server) {
             close(client_socket);
         }
     }
-    
+
     printf("Accept loop terminated\n");
 }
 
 int main() {
     printf("Starting DropBox Server...\n");
-    
+
     // Set up signal handlers for graceful shutdown
     signal(SIGINT, signal_handler);   // Ctrl+C
     signal(SIGTERM, signal_handler);  // Termination request
-    
+    // Prevent server from terminating when trying to write to a closed socket
+    signal(SIGPIPE, SIG_IGN);
+
+    // Server port is fixed to PORT (defined in dropbox_server.h as 8080)
+    // We intentionally ignore any DROPBOX_PORT env to always run on the known port.
+    (void)0;
+
     // Initialize server
     server_context_t *server = init_server();
     if (!server) {
         fprintf(stderr, "Failed to initialize server\n");
         return EXIT_FAILURE;
     }
-    
+
     // Set global server context for signal handler
     g_server_context = server;
-    
+
     // Create server socket
     server->server_socket = create_server_socket();
     if (server->server_socket < 0) {
         cleanup_server(server);
         return EXIT_FAILURE;
     }
-    
+
     printf("DropBox Server started successfully!\n");
     printf("Server configuration:\n");
-    printf("  Port: %d\n", PORT);
+    printf("  Port: %d\n", g_server_port);
     printf("  Max clients: %d\n", MAX_CLIENTS);
     printf("  Client thread pool size: %d\n", CLIENT_THREADPOOL_SIZE);
     printf("  Worker thread pool size: %d\n", WORKER_THREADPOOL_SIZE);
     printf("  Queue capacity: %d\n", QUEUE_SIZE);
-    
+
     // Run main accept loop
     run_accept_loop(server);
-    
+
     // Cleanup and exit
     cleanup_server(server);
     g_server_context = NULL;
-    
+
     printf("DropBox Server shut down successfully\n");
     return EXIT_SUCCESS;
 }

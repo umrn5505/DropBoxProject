@@ -1,0 +1,132 @@
+==75811== Memcheck, a memory error detector
+==75811== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==75811== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==75811== Command: ./dropbox_server
+==75811== Parent PID: 51524
+==75811== 
+==75811== Thread 14:
+==75811== Invalid read of size 1
+==75811==    at 0x484F226: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x4DF1DA7: __printf_buffer (vfprintf-process-arg.c:435)
+==75811==    by 0x4DF25A1: __vfprintf_internal (vfprintf-internal.c:1559)
+==75811==    by 0x4DE71B2: printf (printf.c:33)
+==75811==    by 0x10DED9: worker_thread_function (thread_pool.c:235)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Address 0x4fd3ab8 is 8 bytes inside a block of size 5,088 free'd
+==75811==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10C166: destroy_task (queue_operations.c:356)
+==75811==    by 0x10DB44: client_thread_function (thread_pool.c:148)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Block was alloc'd at
+==75811==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10BEB0: create_task (queue_operations.c:289)
+==75811==    by 0x10C08C: create_priority_task (queue_operations.c:331)
+==75811==    by 0x10D8C6: client_thread_function (thread_pool.c:99)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811== 
+==75811== Invalid read of size 1
+==75811==    at 0x484F234: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x4DF1DA7: __printf_buffer (vfprintf-process-arg.c:435)
+==75811==    by 0x4DF25A1: __vfprintf_internal (vfprintf-internal.c:1559)
+==75811==    by 0x4DE71B2: printf (printf.c:33)
+==75811==    by 0x10DED9: worker_thread_function (thread_pool.c:235)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Address 0x4fd3ab9 is 9 bytes inside a block of size 5,088 free'd
+==75811==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10C166: destroy_task (queue_operations.c:356)
+==75811==    by 0x10DB44: client_thread_function (thread_pool.c:148)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Block was alloc'd at
+==75811==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10BEB0: create_task (queue_operations.c:289)
+==75811==    by 0x10C08C: create_priority_task (queue_operations.c:331)
+==75811==    by 0x10D8C6: client_thread_function (thread_pool.c:99)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811== 
+==75811== Invalid read of size 8
+==75811==    at 0x4852E5E: memmove (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x4DE7D87: memcpy (string_fortified.h:29)
+==75811==    by 0x4DE7D87: __printf_buffer_write (Xprintf_buffer_write.c:39)
+==75811==    by 0x4DF051B: __printf_buffer (vfprintf-process-arg.c:501)
+==75811==    by 0x4DF25A1: __vfprintf_internal (vfprintf-internal.c:1559)
+==75811==    by 0x4DE71B2: printf (printf.c:33)
+==75811==    by 0x10DED9: worker_thread_function (thread_pool.c:235)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Address 0x4fd3ab8 is 8 bytes inside a block of size 5,088 free'd
+==75811==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10C166: destroy_task (queue_operations.c:356)
+==75811==    by 0x10DB44: client_thread_function (thread_pool.c:148)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Block was alloc'd at
+==75811==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10BEB0: create_task (queue_operations.c:289)
+==75811==    by 0x10C08C: create_priority_task (queue_operations.c:331)
+==75811==    by 0x10D8C6: client_thread_function (thread_pool.c:99)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811== 
+==75811== Invalid read of size 2
+==75811==    at 0x4852EB0: memmove (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x4DE7D87: memcpy (string_fortified.h:29)
+==75811==    by 0x4DE7D87: __printf_buffer_write (Xprintf_buffer_write.c:39)
+==75811==    by 0x4DF051B: __printf_buffer (vfprintf-process-arg.c:501)
+==75811==    by 0x4DF25A1: __vfprintf_internal (vfprintf-internal.c:1559)
+==75811==    by 0x4DE71B2: printf (printf.c:33)
+==75811==    by 0x10DED9: worker_thread_function (thread_pool.c:235)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Address 0x4fd3ac0 is 16 bytes inside a block of size 5,088 free'd
+==75811==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10C166: destroy_task (queue_operations.c:356)
+==75811==    by 0x10DB44: client_thread_function (thread_pool.c:148)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Block was alloc'd at
+==75811==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10BEB0: create_task (queue_operations.c:289)
+==75811==    by 0x10C08C: create_priority_task (queue_operations.c:331)
+==75811==    by 0x10D8C6: client_thread_function (thread_pool.c:99)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811== 
+==75811== Invalid read of size 1
+==75811==    at 0x4852EE0: memmove (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x4DE7D87: memcpy (string_fortified.h:29)
+==75811==    by 0x4DE7D87: __printf_buffer_write (Xprintf_buffer_write.c:39)
+==75811==    by 0x4DF051B: __printf_buffer (vfprintf-process-arg.c:501)
+==75811==    by 0x4DF25A1: __vfprintf_internal (vfprintf-internal.c:1559)
+==75811==    by 0x4DE71B2: printf (printf.c:33)
+==75811==    by 0x10DED9: worker_thread_function (thread_pool.c:235)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Address 0x4fd3ac2 is 18 bytes inside a block of size 5,088 free'd
+==75811==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10C166: destroy_task (queue_operations.c:356)
+==75811==    by 0x10DB44: client_thread_function (thread_pool.c:148)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811==  Block was alloc'd at
+==75811==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==75811==    by 0x10BEB0: create_task (queue_operations.c:289)
+==75811==    by 0x10C08C: create_priority_task (queue_operations.c:331)
+==75811==    by 0x10D8C6: client_thread_function (thread_pool.c:99)
+==75811==    by 0x4E23AA3: start_thread (pthread_create.c:447)
+==75811==    by 0x4EB0A63: clone (clone.S:100)
+==75811== 
+==75811== 
+==75811== HEAP SUMMARY:
+==75811==     in use at exit: 0 bytes in 0 blocks
+==75811==   total heap usage: 969 allocs, 969 frees, 830,908,761 bytes allocated
+==75811== 
+==75811== All heap blocks were freed -- no leaks are possible
+==75811== 
+==75811== For lists of detected and suppressed errors, rerun with: -s
+==75811== ERROR SUMMARY: 235 errors from 5 contexts (suppressed: 0 from 0)

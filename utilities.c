@@ -23,7 +23,9 @@ char* calculate_sha256(const char *data, size_t data_size) {
 }
 
 static pthread_mutex_t file_locks_mutex = PTHREAD_MUTEX_INITIALIZER;
-static char locked_files[MAX_CLIENTS][512]; 
+// store locked file paths as "username/filename"
+#define MAX_LOCKED_FILES 1024
+static char locked_files[MAX_LOCKED_FILES][512];
 static int locked_files_count = 0;
 
 int acquire_file_lock(const char *username, const char *filename) {
@@ -33,26 +35,25 @@ int acquire_file_lock(const char *username, const char *filename) {
     snprintf(file_path, sizeof(file_path), "%s/%s", username, filename);
     
     pthread_mutex_lock(&file_locks_mutex);
-    
-    
+
     for (int i = 0; i < locked_files_count; i++) {
         if (strcmp(locked_files[i], file_path) == 0) {
+            // already locked
             pthread_mutex_unlock(&file_locks_mutex);
             return -1;
         }
     }
-    
-   
-    if (locked_files_count < MAX_CLIENTS) {
+
+    if (locked_files_count < MAX_LOCKED_FILES) {
         strncpy(locked_files[locked_files_count], file_path, sizeof(locked_files[0]) - 1);
         locked_files[locked_files_count][sizeof(locked_files[0]) - 1] = '\0';
         locked_files_count++;
         pthread_mutex_unlock(&file_locks_mutex);
-        return 0; 
+        return 0;
     }
-    
+
     pthread_mutex_unlock(&file_locks_mutex);
-    return -1; 
+    return -1;
 }
 
 int release_file_lock(const char *username, const char *filename) {
@@ -62,11 +63,9 @@ int release_file_lock(const char *username, const char *filename) {
     snprintf(file_path, sizeof(file_path), "%s/%s", username, filename);
     
     pthread_mutex_lock(&file_locks_mutex);
-    
- 
+
     for (int i = 0; i < locked_files_count; i++) {
         if (strcmp(locked_files[i], file_path) == 0) {
-           
             for (int j = i; j < locked_files_count - 1; j++) {
                 strcpy(locked_files[j], locked_files[j + 1]);
             }
@@ -75,7 +74,7 @@ int release_file_lock(const char *username, const char *filename) {
             return 0;
         }
     }
-    
+
     pthread_mutex_unlock(&file_locks_mutex);
     return -1; 
 }

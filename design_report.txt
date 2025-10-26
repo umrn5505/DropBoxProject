@@ -1,0 +1,75 @@
+Design report: Worker→Client mechanism, per-user locking, and race-freedom
+
+Overview
+
+This document explains the design choices used by the DropBox server implementation for (1) the worker→client communication mechanism, (2) per-user locking and metadata updates, and (3) why the chosen approach prevents races. It also lists the data shapes, key error modes, and verification/testing notes.
+
+1. Worker → Client mechanism
+
+Architecture summary
+- The server uses a thread-per-client pool (client threads) and a separate pool of worker threads.
+- Client threads accept authenticated commands and transform requests into tasks submitted to a shared task queue.
+- Worker threads dequeue tasks, perform file operations (upload/download/list/delete), and write results back to the originating client socket.
+
+Protocol and synchronization
+- Task creation: the client thread creates a `task_t` structure which contains:
+  - task type (UPLOAD/DOWNLOAD/DELETE/LIST), client socket fd, username, filename, command text
+  - result buffer pointers, result size and result_code
+  - a mutex (`task_mutex`) and a condition variable (`task_cond`) used to signal completion
+  - priority and creation_time for ordered queueing
+
+- After populating the `task_t`, the client thread enqueues it using `enqueue_priority_task()` and then waits on the task's condition variable. Waiting is done with `pthread_cond_wait(&task->task_cond, &task->task_mutex)` while the status is TASK_PENDING or TASK_IN_PROGRESS.
+
+- Worker processing: a worker thread dequeues the task, sets its status to TASK_IN_PROGRESS under the `task_mutex`, executes the requested operation (calling `handle_upload_task`, `handle_download_task`, etc.), populates `task->result_data/result_size` (or `task->error_message/result_code`) and then changes the status to TASK_COMPLETED and signals the `task_cond` to wake the waiting client thread.
+
+- Reply: the client thread, after being signaled, inspects the task status/result under `task_mutex`, sends a textual response or raw data back to the client socket (using `send()` / `send_response()`), destroys the task, and resumes the interactive loop by sending a prompt.
+
+Why this pattern is safe and efficient
+- The `task_t` serves as a single, explicit synchronization point between the creator (client thread) and the worker. Ownership of the task object is clear: both threads refer to the same object but coordinate via the embedded mutex and condition variable. There is no busy-waiting: the client thread sleeps while the worker runs the potentially slow operation.
+- Data returned by workers is either sent directly by the worker (for streaming operations that need to send raw bytes, e.g., download) or stored in `task->result_data` which the client thread sends after wake-up. The implementation documents which operations use direct socket transfers versus buffered responses.
+
+2. Per-user locking
+
+Why per-user locks
+- File operations involve multiple steps touching user-specific metadata (quota, metadata files, and storage directory contents). To avoid races that could corrupt per-user state (e.g., concurrent uploads that exceed quota, concurrent writes to the same file metadata), a per-user mutex is used.
+
+Implementation details
+- A small mutex table (`user_mutexes[]`) maps usernames to `pthread_mutex_t` objects; `get_user_mutex(username)` returns/initializes the mutex for that user. The table is protected by a global `user_mutexes_table_mutex` during lookup/creation.
+- Operations that need to modify per-user state acquire the user mutex before: updating quota files (`update_quota_on_upload` / `update_quota_on_delete`), writing metadata (`save_file_metadata`), and atomic file writes. The per-user mutex serializes metadata/quota updates.
+- For per-file concurrency (same file by multiple operations), the code uses a higher-level `acquire_file_lock(username, filename)` / `release_file_lock(...)` abstraction that ensures operations on the same filename are serialized. This prevents interleaved writes to the same file and ensures consistent metadata.
+
+Why per-user locking is chosen over coarse locking
+- A global lock would reduce concurrency: uploads/downloads for different users would be blocked unnecessarily. Per-user locks strike a balance: they serialize only operations affecting the same user while allowing cross-user parallelism.
+
+3. Race-freedom argument (informal proof)
+
+Assumptions and invariants
+- All accesses that mutate per-user shared state (quota file, per-file metadata, stored file content) must first acquire the per-user mutex and, when appropriate, a per-file lock.
+- Task completion and signaling uses `task_mutex`/`task_cond` pair; both client and worker follow the same discipline (modify status while holding the mutex, signal after unlocking or while holding and then unlocking).
+
+Key race sources and why they are prevented
+- Concurrent quota updates: `update_quota_on_upload`/`update_quota_on_delete` acquire the per-user mutex before reading and writing the quota metadata. Since the per-user mutex is the only mechanism that protects quota file reads/writes, two uploads cannot concurrently read an old quota and both succeed when combined they exceed the limit.
+
+- Concurrent metadata writes for the same user: saving metadata is done under the same per-user mutex, which serializes metadata writes and prevents interleaving or partial writes.
+
+- Concurrent operations on the same filename: `acquire_file_lock(username, filename)` ensures exclusive access to a file's content and metadata for the duration of the operation. Combined with per-user mutex for metadata updates, this avoids file-content races and metadata/content inconsistencies.
+
+- Task handoff races: the client enqueues a `task_t` and then waits on `task_cond`. The worker sets `status` under `task_mutex` and signals `task_cond` after completion. Because both threads synchronize on the same mutex and condition variable, the wakeup is reliably observed and there is no lost wakeup scenario.
+
+Edge cases and mitigations
+- Crash or disconnect during upload: worker detects socket error during `recv` or `send` and sets `result_code`/`error_message`; it releases any locks and signals the task so the client thread can clean up. The partially written temporary files are written atomically via `atomic_write_file()` to avoid corrupt files.
+
+- Quota update failure after file write: the implementation updates quota under the per-user lock. If quota update fails after writing the file, code attempts to remove the just-written file and returns an error. This removal and quota update happen while the per-user mutex is held so concurrent updates are serialized.
+
+- Mutex table exhaustion: `get_user_mutex()` returns NULL if table is full; callers must detect this and fail gracefully. In practice the table size is set high enough for the expected user count.
+
+Testing and verification notes
+- Unit tests for `save_file_to_storage` and `update_quota_on_upload` should simulate concurrent uploads for the same user and assert quota correctness.
+- Integration tests (the project's `tests/full_integration_test` and `tests/concurrency_test`) exercise interleaved operations across many clients and validate semantics (upload→list→download→delete).
+- Use dynamic analysis (TSAN) to check for data races; run integration tests under TSAN to validate locking discipline.
+
+Conclusion
+
+This design separates concerns: a compact task-synchronization primitive (`task_t` with mutex+cond) for worker→client interaction, and a per-user locking layer to protect metadata and quota. The composition of per-file locks with per-user mutexes, combined with atomic file writes and careful ordering of state updates, ensures operations are race-free for the intended invariants while allowing high concurrency across different users.
+
+If you want, I can also produce a short sequence diagram or update the code to log lock acquisition/release events for runtime verification.
