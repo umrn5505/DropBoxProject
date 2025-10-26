@@ -190,6 +190,7 @@ int release_file_lock(const char *username, const char *filename);
 
 
 void send_response(int socket_fd, const char *response);
+ssize_t send_all(int socket_fd, const void *buf, size_t len);
 int receive_data(int socket_fd, char *buffer, size_t buffer_size);
 void cleanup_server(server_context_t *server);
 void signal_shutdown(server_context_t *server);

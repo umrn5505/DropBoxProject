@@ -1,0 +1,236 @@
+Starting full integration tests
+2025-10-26 17:16:42.875 [tid=139140606986048] main: starting single client flow
+2025-10-26 17:16:42.875 [tid=139140606986048] single_client_flow: connected to server socket=3
+2025-10-26 17:16:42.876 [tid=139140606986048] single_client_flow: welcome: Welcome to DropBox Server!
+
+2025-10-26 17:16:42.876 [tid=139140606986048] single_client_flow: sending SIGNUP for itest_81002
+2025-10-26 17:16:42.876 [tid=139140606986048] single_client_flow: SIGNUP_SUCCESS for itest_81002
+2025-10-26 17:16:42.876 [tid=139140606986048] single_client_flow: uploading integr_test.bin (len=31)
+2025-10-26 17:16:42.918 [tid=139140606986048] single_client_flow: sent file size and data for integr_test.bin
+2025-10-26 17:16:42.968 [tid=139140606986048] single_client_flow: upload response: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:42.968 [tid=139140606986048] single_client_flow: requested LIST
+2025-10-26 17:16:43.009 [tid=139140606986048] single_client_flow: found integr_test.bin in LIST
+2025-10-26 17:16:43.009 [tid=139140606986048] single_client_flow: requesting DOWNLOAD integr_test.bin
+2025-10-26 17:16:43.009 [tid=139140606986048] single_client_flow: expecting download size=31
+2025-10-26 17:16:43.050 [tid=139140606986048] single_client_flow: download verified for integr_test.bin
+2025-10-26 17:16:43.050 [tid=139140606986048] single_client_flow: sending DELETE integr_test.bin
+2025-10-26 17:16:43.050 [tid=139140606986048] single_client_flow: delete response: SUCCESS: Operation completed successfully
+> 
+2025-10-26 17:16:43.052 [tid=139140606986048] single_client_flow: confirmed integr_test.bin removed from LIST
+2025-10-26 17:16:43.052 [tid=139140606986048] single_client_flow: closed connection and exiting
+Single-client flow passed
+Running concurrency test (10 clients x 30 rounds)...
+2025-10-26 17:16:43.052 [tid=139140606986048] main: starting concurrency test
+Starting client thread 1
+Starting client thread 2
+2025-10-26 17:16:43.052 [tid=139140603573952] cthread_fn: thread start id=1 rounds=30
+Starting client thread 3
+2025-10-26 17:16:43.052 [tid=139140595181248] cthread_fn: thread start id=2 rounds=30
+Starting client thread 4
+Starting client thread 5
+2025-10-26 17:16:43.052 [tid=139140595181248] cthread_fn: connected socket=4 for id=2
+Starting client thread 6
+2025-10-26 17:16:43.052 [tid=139140603573952] cthread_fn: connected socket=3 for id=1
+2025-10-26 17:16:43.052 [tid=139140595181248] cthread_fn: welcome for id=2: Welcome to DropBox Server!
+
+2025-10-26 17:16:43.052 [tid=139140586788544] cthread_fn: thread start id=3 rounds=30
+2025-10-26 17:16:43.052 [tid=139140595181248] cthread_fn: signup not successful for id=2, trying LOGIN
+2025-10-26 17:16:43.053 [tid=139140603573952] cthread_fn: welcome for id=1: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.053 [tid=139140578395840] cthread_fn: thread start id=4 rounds=30
+2025-10-26 17:16:43.053 [tid=139140586788544] cthread_fn: connected socket=5 for id=3
+2025-10-26 17:16:43.053 [tid=139140578395840] cthread_fn: connected socket=6 for id=4
+2025-10-26 17:16:43.053 [tid=139140570003136] cthread_fn: thread start id=5 rounds=30
+2025-10-26 17:16:43.053 [tid=139140586788544] cthread_fn: welcome for id=3: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.053 [tid=139140570003136] cthread_fn: connected socket=7 for id=5
+2025-10-26 17:16:43.053 [tid=139140561610432] cthread_fn: thread start id=6 rounds=30
+2025-10-26 17:16:43.053 [tid=139140603573952] cthread_fn: signup not successful for id=1, trying LOGIN
+2025-10-26 17:16:43.053 [tid=139140561610432] cthread_fn: connected socket=8 for id=6
+Starting client thread 7
+2025-10-26 17:16:43.053 [tid=139140578395840] cthread_fn: welcome for id=4: Welcome to DropBox Server!
+
+2025-10-26 17:16:43.053 [tid=139140578395840] cthread_fn: signup not successful for id=4, trying LOGIN
+Starting client thread 8
+2025-10-26 17:16:43.053 [tid=139140586788544] cthread_fn: signup not successful for id=3, trying LOGIN
+2025-10-26 17:16:43.053 [tid=139140603573952] cthread_fn: server did not request file data for u1_f0.dat (id=1,i=0)
+Starting client thread 9
+Starting client thread 10
+2025-10-26 17:16:43.054 [tid=139140595181248] cthread_fn: server did not request file data for u2_f0.dat (id=2,i=0)
+2025-10-26 17:16:43.054 [tid=139140536432320] cthread_fn: thread start id=9 rounds=30
+Joining client thread 1
+2025-10-26 17:16:43.054 [tid=139140553217728] cthread_fn: thread start id=7 rounds=30
+2025-10-26 17:16:43.054 [tid=139140595181248] cthread_fn: server did not request file data for u2_f1.dat (id=2,i=1)
+2025-10-26 17:16:43.054 [tid=139140528039616] cthread_fn: thread start id=10 rounds=30
+2025-10-26 17:16:43.054 [tid=139140553217728] cthread_fn: connected socket=10 for id=7
+2025-10-26 17:16:43.054 [tid=139140544825024] cthread_fn: thread start id=8 rounds=30
+2025-10-26 17:16:43.054 [tid=139140528039616] cthread_fn: connected socket=11 for id=10
+2025-10-26 17:16:43.054 [tid=139140561610432] cthread_fn: welcome for id=6: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.054 [tid=139140586788544] cthread_fn: server did not request file data for u3_f0.dat (id=3,i=0)
+2025-10-26 17:16:43.054 [tid=139140595181248] cthread_fn: server did not request file data for u2_f2.dat (id=2,i=2)
+2025-10-26 17:16:43.054 [tid=139140544825024] cthread_fn: connected socket=12 for id=8
+2025-10-26 17:16:43.054 [tid=139140570003136] cthread_fn: welcome for id=5: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f0.dat (id=4,i=0)
+2025-10-26 17:16:43.054 [tid=139140536432320] cthread_fn: connected socket=9 for id=9
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f1.dat (id=4,i=1)
+2025-10-26 17:16:43.054 [tid=139140561610432] cthread_fn: signup not successful for id=6, trying LOGIN
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f2.dat (id=4,i=2)
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f3.dat (id=4,i=3)
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f4.dat (id=4,i=4)
+2025-10-26 17:16:43.054 [tid=139140561610432] cthread_fn: server did not request file data for u6_f0.dat (id=6,i=0)
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f5.dat (id=4,i=5)
+2025-10-26 17:16:43.054 [tid=139140553217728] cthread_fn: welcome for id=7: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f6.dat (id=4,i=6)
+2025-10-26 17:16:43.054 [tid=139140561610432] cthread_fn: server did not request file data for u6_f1.dat (id=6,i=1)
+2025-10-26 17:16:43.054 [tid=139140528039616] cthread_fn: welcome for id=10: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.054 [tid=139140570003136] cthread_fn: signup not successful for id=5, trying LOGIN
+2025-10-26 17:16:43.054 [tid=139140578395840] cthread_fn: server did not request file data for u4_f7.dat (id=4,i=7)
+2025-10-26 17:16:43.054 [tid=139140553217728] cthread_fn: signup not successful for id=7, trying LOGIN
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f8.dat (id=4,i=8)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f9.dat (id=4,i=9)
+2025-10-26 17:16:43.055 [tid=139140553217728] cthread_fn: server did not request file data for u7_f0.dat (id=7,i=0)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f10.dat (id=4,i=10)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f11.dat (id=4,i=11)
+2025-10-26 17:16:43.055 [tid=139140553217728] cthread_fn: server did not request file data for u7_f1.dat (id=7,i=1)
+2025-10-26 17:16:43.055 [tid=139140528039616] cthread_fn: signup not successful for id=10, trying LOGIN
+2025-10-26 17:16:43.055 [tid=139140570003136] cthread_fn: server did not request file data for u5_f0.dat (id=5,i=0)
+2025-10-26 17:16:43.055 [tid=139140536432320] cthread_fn: welcome for id=9: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f12.dat (id=4,i=12)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f13.dat (id=4,i=13)
+2025-10-26 17:16:43.055 [tid=139140561610432] cthread_fn: uploaded u6_f2.dat (size=46650) for id=6 i=2, server: ERROR: File too large or invalid size
+
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f14.dat (id=4,i=14)
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f3.dat (id=2,i=3)
+2025-10-26 17:16:43.055 [tid=139140536432320] cthread_fn: signup not successful for id=9, trying LOGIN
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f15.dat (id=4,i=15)
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f4.dat (id=2,i=4)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f16.dat (id=4,i=16)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f17.dat (id=4,i=17)
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f5.dat (id=2,i=5)
+2025-10-26 17:16:43.055 [tid=139140536432320] cthread_fn: server did not request file data for u9_f0.dat (id=9,i=0)
+2025-10-26 17:16:43.055 [tid=139140561610432] cthread_fn: DELETE u6_f2.dat id=6 i=2 => > ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWNLOAD <filename> [--priority=high|medium|low], DELETE <filename> [--priority=high|medium|low], LIST [--priority=high|me
+2025-10-26 17:16:43.055 [tid=139140528039616] cthread_fn: server did not request file data for u10_f0.dat (id=10,i=0)
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f6.dat (id=2,i=6)
+2025-10-26 17:16:43.055 [tid=139140536432320] cthread_fn: server did not request file data for u9_f1.dat (id=9,i=1)
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f18.dat (id=4,i=18)
+2025-10-26 17:16:43.055 [tid=139140544825024] cthread_fn: welcome for id=8: Welcome to DropBox Server!
+Please login or signup (LOGIN <username> <password> or SIGNUP <username> <password>): 
+2025-10-26 17:16:43.055 [tid=139140578395840] cthread_fn: server did not request file data for u4_f19.dat (id=4,i=19)
+2025-10-26 17:16:43.055 [tid=139140553217728] cthread_fn: uploaded u7_f2.dat (size=63946) for id=7 i=2, server: ERROR: File too large or invalid size
+
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f7.dat (id=2,i=7)
+2025-10-26 17:16:43.055 [tid=139140544825024] cthread_fn: signup not successful for id=8, trying LOGIN
+2025-10-26 17:16:43.055 [tid=139140595181248] cthread_fn: server did not request file data for u2_f8.dat (id=2,i=8)
+2025-10-26 17:16:43.056 [tid=139140544825024] cthread_fn: server did not request file data for u8_f0.dat (id=8,i=0)
+2025-10-26 17:16:43.056 [tid=139140536432320] cthread_fn: uploaded u9_f2.dat (size=22104) for id=9 i=2, server: ERROR: File too large or invalid size
+> 
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f20.dat (id=4,i=20)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f21.dat (id=4,i=21)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f22.dat (id=4,i=22)
+2025-10-26 17:16:43.056 [tid=139140595181248] cthread_fn: server did not request file data for u2_f9.dat (id=2,i=9)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f23.dat (id=4,i=23)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f24.dat (id=4,i=24)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f25.dat (id=4,i=25)
+2025-10-26 17:16:43.056 [tid=139140595181248] cthread_fn: server did not request file data for u2_f10.dat (id=2,i=10)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f26.dat (id=4,i=26)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f27.dat (id=4,i=27)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f28.dat (id=4,i=28)
+2025-10-26 17:16:43.056 [tid=139140595181248] cthread_fn: server did not request file data for u2_f11.dat (id=2,i=11)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: server did not request file data for u4_f29.dat (id=4,i=29)
+2025-10-26 17:16:43.056 [tid=139140578395840] cthread_fn: thread end id=4
+2025-10-26 17:16:43.056 [tid=139140595181248] cthread_fn: server did not request file data for u2_f12.dat (id=2,i=12)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f13.dat (id=2,i=13)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f14.dat (id=2,i=14)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f15.dat (id=2,i=15)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f16.dat (id=2,i=16)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f17.dat (id=2,i=17)
+2025-10-26 17:16:43.057 [tid=139140595181248] cthread_fn: server did not request file data for u2_f18.dat (id=2,i=18)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f19.dat (id=2,i=19)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f20.dat (id=2,i=20)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f21.dat (id=2,i=21)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f22.dat (id=2,i=22)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f23.dat (id=2,i=23)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f24.dat (id=2,i=24)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f25.dat (id=2,i=25)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f26.dat (id=2,i=26)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f27.dat (id=2,i=27)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f28.dat (id=2,i=28)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: server did not request file data for u2_f29.dat (id=2,i=29)
+2025-10-26 17:16:43.058 [tid=139140595181248] cthread_fn: thread end id=2
+2025-10-26 17:16:43.060 [tid=139140561610432] cthread_fn: server did not request file data for u6_f3.dat (id=6,i=3)
+2025-10-26 17:16:43.061 [tid=139140553217728] cthread_fn: server did not request file data for u7_f3.dat (id=7,i=3)
+2025-10-26 17:16:43.061 [tid=139140536432320] cthread_fn: server did not request file data for u9_f3.dat (id=9,i=3)
+2025-10-26 17:16:43.062 [tid=139140586788544] cthread_fn: uploaded u3_f1.dat (size=53674) for id=3 i=1, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.062 [tid=139140586788544] cthread_fn: DELETE u3_f1.dat id=3 i=1 => > 
+2025-10-26 17:16:43.062 [tid=139140561610432] cthread_fn: uploaded u6_f4.dat (size=1254) for id=6 i=4, server: ERROR: File too large or invalid size
+
+2025-10-26 17:16:43.062 [tid=139140553217728] cthread_fn: uploaded u7_f4.dat (size=30347) for id=7 i=4, server: ERROR: File too large or invalid size
+> 
+2025-10-26 17:16:43.063 [tid=139140528039616] cthread_fn: uploaded u10_f1.dat (size=58243) for id=10 i=1, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.064 [tid=139140544825024] cthread_fn: uploaded u8_f1.dat (size=46098) for id=8 i=1, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.064 [tid=139140570003136] cthread_fn: uploaded u5_f1.dat (size=64216) for id=5 i=1, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.064 [tid=139140570003136] cthread_fn: LIST for id=5 i=1 => > 
+2025-10-26 17:16:43.065 [tid=139140570003136] cthread_fn: DELETE u5_f1.dat id=5 i=1 => === File Listing for concur_5 ===
+
+Filename                       Size       Modified            
+--------                       ----       --------            
+u5_f13.dat                     711     
+2025-10-26 17:16:43.067 [tid=139140586788544] cthread_fn: server did not request file data for u3_f2.dat (id=3,i=2)
+2025-10-26 17:16:43.067 [tid=139140561610432] cthread_fn: server did not request file data for u6_f5.dat (id=6,i=5)
+2025-10-26 17:16:43.068 [tid=139140553217728] cthread_fn: server did not request file data for u7_f5.dat (id=7,i=5)
+2025-10-26 17:16:43.068 [tid=139140586788544] cthread_fn: uploaded u3_f3.dat (size=59411) for id=3 i=3, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.068 [tid=139140553217728] cthread_fn: uploaded u7_f6.dat (size=51800) for id=7 i=6, server: ERROR: File too large or invalid size
+
+2025-10-26 17:16:43.069 [tid=139140544825024] cthread_fn: server did not request file data for u8_f2.dat (id=8,i=2)
+2025-10-26 17:16:43.069 [tid=139140544825024] cthread_fn: uploaded u8_f3.dat (size=43062) for id=8 i=3, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.070 [tid=139140570003136] cthread_fn: server did not request file data for u5_f2.dat (id=5,i=2)
+2025-10-26 17:16:43.070 [tid=139140570003136] cthread_fn: uploaded u5_f3.dat (size=41742) for id=5 i=3, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.073 [tid=139140553217728] cthread_fn: server did not request file data for u7_f7.dat (id=7,i=7)
+2025-10-26 17:16:43.073 [tid=139140553217728] cthread_fn: uploaded u7_f8.dat (size=15423) for id=7 i=8, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.099 [tid=139140603573952] cthread_fn: uploaded u1_f1.dat (size=13781) for id=1 i=1, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.105 [tid=139140603573952] cthread_fn: server did not request file data for u1_f2.dat (id=1,i=2)
+2025-10-26 17:16:43.105 [tid=139140603573952] cthread_fn: uploaded u1_f3.dat (size=7098) for id=1 i=3, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.106 [tid=139140536432320] cthread_fn: uploaded u9_f4.dat (size=4700) for id=9 i=4, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.109 [tid=139140586788544] cthread_fn: LIST for id=3 i=3 => ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWNLOAD <filename> [--priority=high|medium|low], DELETE <filename> [--priority=high|medium|low], LIST [--priority=high|medi
+2025-10-26 17:16:43.111 [tid=139140536432320] cthread_fn: server did not request file data for u9_f5.dat (id=9,i=5)
+2025-10-26 17:16:43.111 [tid=139140536432320] cthread_fn: uploaded u9_f6.dat (size=56932) for id=9 i=6, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.113 [tid=139140561610432] cthread_fn: uploaded u6_f6.dat (size=53616) for id=6 i=6, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.114 [tid=139140586788544] cthread_fn: server did not request file data for u3_f4.dat (id=3,i=4)
+2025-10-26 17:16:43.114 [tid=139140586788544] cthread_fn: uploaded u3_f5.dat (size=50587) for id=3 i=5, server: ERROR: File too large or invalid size
+> 
+2025-10-26 17:16:43.116 [tid=139140536432320] cthread_fn: server did not request file data for u9_f7.dat (id=9,i=7)
+2025-10-26 17:16:43.116 [tid=139140536432320] cthread_fn: uploaded u9_f8.dat (size=58168) for id=9 i=8, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.122 [tid=139140536432320] cthread_fn: server did not request file data for u9_f9.dat (id=9,i=9)
+2025-10-26 17:16:43.167 [tid=139140536432320] cthread_fn: uploaded u9_f10.dat (size=34324) for id=9 i=10, server: SUCCESS: Operation completed successfully
+
+2025-10-26 17:16:43.168 [tid=139140536432320] cthread_fn: DELETE u9_f10.dat id=9 i=10 => > 
+2025-10-26 17:16:43.173 [tid=139140536432320] cthread_fn: server did not request file data for u9_f11.dat (id=9,i=11)
+2025-10-26 17:16:43.173 [tid=139140536432320] cthread_fn: uploaded u9_f12.dat (size=44916) for id=9 i=12, server: ERROR: File too large or invalid size
+
+2025-10-26 17:16:43.178 [tid=139140536432320] cthread_fn: server did not request file data for u9_f13.dat (id=9,i=13)
+2025-10-26 17:16:43.178 [tid=139140536432320] cthread_fn: uploaded u9_f14.dat (size=59796) for id=9 i=14, server: ERROR: File too large or invalid size
+> ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWN
+2025-10-26 17:16:43.178 [tid=139140536432320] cthread_fn: DELETE u9_f14.dat id=9 i=14 => ERROR: Invalid command. Use UPLOAD <filename> [--priority=high|medium|low], DOWNLOAD <filename> [--priority=high|medium|low], DELETE <filename> [--priority=high|medium|low], LIST [--priority=high|medi
+2025-10-26 17:16:43.183 [tid=139140536432320] cthread_fn: server did not request file data for u9_f15.dat (id=9,i=15)
+2025-10-26 17:16:43.184 [tid=139140536432320] cthread_fn: uploaded u9_f16.dat (size=40279) for id=9 i=16, server: ERROR: File too large or invalid size
+

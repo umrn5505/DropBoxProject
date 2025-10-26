@@ -357,13 +357,38 @@ void destroy_task(task_t *task) {
 }
 
 // Utility Functions
+
+// send_all: reliably send 'len' bytes or return -1 on error
+ssize_t send_all(int socket_fd, const void *buf, size_t len) {
+    if (socket_fd < 0 || !buf) return -1;
+    const char *p = buf;
+    size_t remaining = len;
+    while (remaining > 0) {
+#ifdef MSG_NOSIGNAL
+        ssize_t n = send(socket_fd, p, remaining, MSG_NOSIGNAL);
+#else
+        ssize_t n = send(socket_fd, p, remaining, 0);
+#endif
+        if (n < 0) {
+            if (errno == EINTR) continue; // retry
+            // treat client disconnects as error to caller
+            return -1;
+        }
+        if (n == 0) return -1;
+        p += n;
+        remaining -= (size_t)n;
+    }
+    return (ssize_t)len;
+}
+
 void send_response(int socket_fd, const char *response) {
     if (socket_fd < 0 || !response) return;
-    
+
     size_t len = strlen(response);
-    ssize_t sent = send(socket_fd, response, len, 0);
-    if (sent != (ssize_t)len) {
-        perror("Failed to send complete response");
+    // best-effort: use send_all to avoid partial writes
+    if (send_all(socket_fd, response, len) != (ssize_t)len) {
+        // silent on disconnects
+        return;
     }
 }
 

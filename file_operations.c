@@ -71,7 +71,9 @@ void handle_upload_task(task_t *task) {
         return;
     }
 
-    if (recv_all(task->client_socket, buffer, sizeof(size_t)) != 0) {
+    // Receive 8-byte network-order uint64_t file size
+    uint64_t net_size = 0;
+    if (recv_all(task->client_socket, &net_size, sizeof(net_size)) != 0) {
         task->result_code = -1;
         strncpy(task->error_message, "Failed to receive file size", sizeof(task->error_message) - 1);
         free(file_data);
@@ -79,12 +81,11 @@ void handle_upload_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    for (size_t i = 0; i < sizeof(size_t); ++i) printf("%02x ", (unsigned char)buffer[i]);
-    printf("\n");
-    size_t expected_size = *((size_t*)buffer);
-    if (expected_size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+    uint64_t expected_size = (uint64_t)__builtin_bswap64(net_size);
+    uint64_t max_bytes = (uint64_t)MAX_FILE_SIZE_MB * 1024ULL * 1024ULL;
+    if (expected_size == 0 || expected_size > max_bytes) {
         task->result_code = -1;
-        strncpy(task->error_message, "File too large", sizeof(task->error_message) - 1);
+        strncpy(task->error_message, "File too large or invalid size", sizeof(task->error_message) - 1);
         free(file_data);
         release_file_lock(task->username, task->filename);
         pthread_mutex_unlock(&task->task_mutex);
@@ -176,7 +177,9 @@ void handle_download_task(task_t *task) {
     }
     
     
-    if (send(task->client_socket, &file_size, sizeof(size_t), 0) != sizeof(size_t)) {
+    // Send file size as 8-byte network-order value to be portable
+    uint64_t net_fsize = __builtin_bswap64((uint64_t)file_size);
+    if (send_all(task->client_socket, &net_fsize, sizeof(net_fsize)) != (ssize_t)sizeof(net_fsize)) {
         task->result_code = -1;
         strncpy(task->error_message, "Failed to send file size", sizeof(task->error_message) - 1);
         free(file_data);
@@ -184,12 +187,10 @@ void handle_download_task(task_t *task) {
         pthread_mutex_unlock(&task->task_mutex);
         return;
     }
-    
-    
+
     size_t total_sent = 0;
     while (total_sent < file_size) {
-        ssize_t bytes_sent = send(task->client_socket, file_data + total_sent, 
-                                file_size - total_sent, 0);
+        ssize_t bytes_sent = send_all(task->client_socket, file_data + total_sent, file_size - total_sent);
         if (bytes_sent <= 0) {
             task->result_code = -1;
             strncpy(task->error_message, "Failed to send file data", sizeof(task->error_message) - 1);
@@ -198,16 +199,16 @@ void handle_download_task(task_t *task) {
             pthread_mutex_unlock(&task->task_mutex);
             return;
         }
-        total_sent += bytes_sent;
+        total_sent += (size_t)bytes_sent;
     }
-    
-    
+
+
     task->result_code = 0;
     char success_msg[256];
     snprintf(success_msg, sizeof(success_msg), "File '%s' downloaded successfully (%zu bytes)", 
              task->filename, file_size);
     strncpy(task->error_message, success_msg, sizeof(task->error_message) - 1);
-    
+
     free(file_data);
     release_file_lock(task->username, task->filename);
     pthread_mutex_unlock(&task->task_mutex);

@@ -199,65 +199,75 @@ int parse_command(const char *command_line, char *command, char *filename) {
 // Enhanced command parsing with priority support
 int parse_priority_command(const char *command_line, char *command, char *filename, int *priority) {
     if (!command_line || !command || !filename || !priority) return -1;
-    
-    // Initialize outputs
+
+    // initialize outputs
     command[0] = '\0';
     filename[0] = '\0';
-    *priority = PRIORITY_MEDIUM; // Default priority
-    
-    // Parse command with optional priority flag
-    // Format: COMMAND [filename] [--priority=high|medium|low] or [--high|--medium|--low]
-    char temp_command[64] = {0};
-    char temp_filename[MAX_FILENAME] = {0};
-    char priority_flag[32] = {0};
-    
-    int parsed = sscanf(command_line, "%63s %255s %31s", temp_command, temp_filename, priority_flag);
-    
-    if (parsed < 1) return -1;
-    
-    // Convert command to uppercase
-    for (int i = 0; temp_command[i]; i++) {
-        temp_command[i] = toupper(temp_command[i]);
+    *priority = PRIORITY_MEDIUM;
+
+    // Make a local copy we can tokenize
+    char tmp[512];
+    size_t len = strlen(command_line);
+    if (len >= sizeof(tmp)) len = sizeof(tmp) - 1;
+    memcpy(tmp, command_line, len);
+    tmp[len] = '\0';
+
+    // Trim leading whitespace and any leading prompt characters like '> ' produced by server
+    char *p = tmp;
+    while (*p && isspace((unsigned char)*p)) p++;
+    if (*p == '>') {
+        p++;
+        while (*p && isspace((unsigned char)*p)) p++;
     }
-    
-    // Check if second argument is a priority flag instead of filename
-    if (parsed >= 2 && (strncmp(temp_filename, "--", 2) == 0 || temp_filename[0] == '-')) {
-        // Priority flag in place of filename, move it to priority_flag
-        strcpy(priority_flag, temp_filename);
-        temp_filename[0] = '\0';
-        parsed = 2; // Adjust parsed count
+
+    // Tokenize: COMMAND [filename] [flag]
+    char *saveptr = NULL;
+    char *tok = strtok_r(p, " \t", &saveptr);
+    if (!tok) return -1;
+    // upper-case command
+    for (char *q = tok; *q; ++q) *q = (char)toupper((unsigned char)*q);
+    strncpy(command, tok, 63);
+    command[63] = '\0';
+
+    // next token may be filename or flag
+    char *tok2 = strtok_r(NULL, " \t", &saveptr);
+    char *tok3 = strtok_r(NULL, " \t", &saveptr);
+
+    // Determine which tokens are filename vs priority flags
+    char fname_buf[MAX_FILENAME] = "";
+    char flag_buf[64] = "";
+    if (tok2) {
+        if (tok2[0] == '-') {
+            strncpy(flag_buf, tok2, sizeof(flag_buf)-1);
+        } else {
+            strncpy(fname_buf, tok2, sizeof(fname_buf)-1);
+        }
     }
-    
-    // Parse priority flag if present
-    if (strlen(priority_flag) > 0) {
-        if (strcmp(priority_flag, "--high") == 0 || strcmp(priority_flag, "--priority=high") == 0) {
+    if (tok3 && strlen(flag_buf) == 0) {
+        strncpy(flag_buf, tok3, sizeof(flag_buf)-1);
+    }
+
+    // parse priority flag if present
+    if (strlen(flag_buf) > 0) {
+        if (strcmp(flag_buf, "--high") == 0 || strcmp(flag_buf, "--priority=high") == 0 || strcmp(flag_buf, "-high") == 0) {
             *priority = PRIORITY_HIGH;
-        } else if (strcmp(priority_flag, "--medium") == 0 || strcmp(priority_flag, "--priority=medium") == 0) {
-            *priority = PRIORITY_MEDIUM;
-        } else if (strcmp(priority_flag, "--low") == 0 || strcmp(priority_flag, "--priority=low") == 0) {
+        } else if (strcmp(flag_buf, "--low") == 0 || strcmp(flag_buf, "--priority=low") == 0 || strcmp(flag_buf, "-low") == 0) {
             *priority = PRIORITY_LOW;
+        } else {
+            *priority = PRIORITY_MEDIUM;
         }
-        // If unrecognized priority flag, keep default medium priority
     }
-    
-    // Validate command and filename requirements
-    if (strcmp(temp_command, "UPLOAD") == 0 || 
-        strcmp(temp_command, "DOWNLOAD") == 0 || 
-        strcmp(temp_command, "DELETE") == 0) {
-        if (strlen(temp_filename) == 0) {
-            return -1; // These commands require a filename
-        }
-        strcpy(filename, temp_filename);
-    } else if (strcmp(temp_command, "LIST") == 0) {
-        // LIST doesn't require a filename
-        filename[0] = '\0';
-    } else if (strcmp(temp_command, "QUIT") == 0 || strcmp(temp_command, "EXIT") == 0) {
-        // Quit commands
+
+    // Validate required filename for upload/download/delete
+    if (strcmp(command, "UPLOAD") == 0 || strcmp(command, "DOWNLOAD") == 0 || strcmp(command, "DELETE") == 0) {
+        if (strlen(fname_buf) == 0) return -1;
+        strncpy(filename, fname_buf, MAX_FILENAME-1);
+        filename[MAX_FILENAME-1] = '\0';
+    } else if (strcmp(command, "LIST") == 0 || strcmp(command, "QUIT") == 0 || strcmp(command, "EXIT") == 0) {
         filename[0] = '\0';
     } else {
-        return -1; // Unknown command
+        return -1;
     }
-    
-    strcpy(command, temp_command);
+
     return 0;
 }
