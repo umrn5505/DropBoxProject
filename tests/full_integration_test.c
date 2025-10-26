@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +10,9 @@
 #include <errno.h>
 #include <sys/select.h>
 #include <sys/time.h>
+
+// forward declarations
+static int wait_for_substring(int sock, const char *substr, int timeout_ms, char *outbuf, size_t outbuf_len);
 
 #define SERVER_IP "127.0.0.1"
 #define DEFAULT_SERVER_PORT 8080
@@ -45,6 +49,11 @@ static int connect_server() {
     addr.sin_port = htons(get_server_port());
     inet_pton(AF_INET, SERVER_IP, &addr.sin_addr);
     if (connect(s, (struct sockaddr*)&addr, sizeof(addr)) < 0) { close(s); return -1; }
+    // set reasonable socket timeouts so client threads don't block forever
+    struct timeval tv;
+    tv.tv_sec = 10; tv.tv_usec = 0; // 10 second timeout
+    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
     return s;
 }
 
@@ -192,9 +201,32 @@ void *cthread_fn(void *arg) {
 int concurrency_test(int clients, int rounds) {
     pthread_t *ths = malloc(sizeof(pthread_t)*clients);
     cthread_arg_t *args = malloc(sizeof(cthread_arg_t)*clients);
-    for (int i=0;i<clients;i++) { args[i].id = i+1; args[i].rounds = rounds; pthread_create(&ths[i], NULL, cthread_fn, &args[i]); }
-    for (int i=0;i<clients;i++) pthread_join(ths[i], NULL);
-    free(ths); free(args);
+    if (!ths || !args) {
+        fprintf(stderr, "Failed to allocate thread arrays\n");
+        return -1;
+    }
+
+    // Start client threads
+    for (int i = 0; i < clients; ++i) {
+        args[i].id = i + 1;
+        args[i].rounds = rounds;
+        fprintf(stderr, "Starting client thread %d\n", i+1);
+        if (pthread_create(&ths[i], NULL, cthread_fn, &args[i]) != 0) {
+            perror("pthread_create");
+            ths[i] = 0;
+        }
+    }
+
+    // Wait for client threads to finish (no cancellation/time limits)
+    for (int i = 0; i < clients; ++i) {
+        if (ths[i] == 0) continue;
+        fprintf(stderr, "Joining client thread %d\n", i+1);
+        pthread_join(ths[i], NULL);
+        fprintf(stderr, "Client thread %d joined\n", i+1);
+    }
+
+    free(ths);
+    free(args);
     return 0;
 }
 

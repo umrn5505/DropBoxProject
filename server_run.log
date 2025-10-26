@@ -1,0 +1,1180 @@
+Starting DropBox Server...
+Client queue created with capacity: 50
+Task queue created with capacity: 50
+Creating client thread pool (10 threads)...
+Client thread 128032987670208 started
+Client thread 128032996062912 started
+Client thread 128032979277504 started
+Client thread 128032970884800 started
+Client thread 128032954099392 started
+Client thread 128032962492096 started
+Client thread 128032945706688 started
+Client thread 128032937313984 started
+Client thread 128032928921280 started
+Creating worker thread pool (5 threads)...
+Client thread 128032920528576 started
+Worker thread 128032912135872 started
+Worker thread 128032903743168 started
+Worker thread 128032895350464 started
+Worker thread 128032886957760 started
+Server initialized successfully
+Worker thread 128032878565056 started
+Server listening on port 8080
+DropBox Server started successfully!
+Server configuration:
+  Port: 8080
+  Max clients: 100
+  Client thread pool size: 10
+  Worker thread pool size: 5
+  Queue capacity: 50
+Starting main accept loop...
+Accepted connection from 127.0.0.1:35812 (socket 4)
+Client socket 4 enqueued, queue size: 1
+Client socket 4 dequeued, queue size: 0
+Client thread 128032987670208 handling socket 4
+User 'itest_75451' created successfully
+User 'itest_75451' signed up and logged in successfully on socket 4
+Received command from itest_75451 (socket 4): UPLOAD integr_test.bin
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by itest_75451 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user itest_75451
+Processing UPLOAD task for file integr_test.bin (user: itest_75451, priority: 2)
+1f 00 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=itest_75451, filename=integr_test.bin, size=31
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user itest_75451
+Received command from itest_75451 (socket 4): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by itest_75451 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032903743168 processing task type 3 for user itest_75451
+Processing LIST task (user: itest_75451, priority: 2)
+Worker thread 128032903743168 completed task for user itest_75451
+Received command from itest_75451 (socket 4): DOWNLOAD integr_test.bin
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by itest_75451 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032895350464 processing task type 1 for user itest_75451
+Processing DOWNLOAD task for file integr_test.bin (user: itest_75451, priority: 2)
+Worker thread 128032895350464 completed task for user itest_75451
+Received command from itest_75451 (socket 4): DELETE integr_test.bin
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by itest_75451 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032886957760 processing task type 2 for user itest_75451
+Processing DELETE task for file integr_test.bin (user: itest_75451, priority: 2)
+Worker thread 128032886957760 completed task for user itest_75451
+Received command from itest_75451 (socket 4): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by itest_75451 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user itest_75451
+Processing LIST task (user: itest_75451, priority: 2)
+Worker thread 128032878565056 completed task for user itest_75451
+Received command from itest_75451 (socket 4): QUIT
+User itest_75451 (socket 4) quit
+Client thread 128032987670208 finished handling socket 4
+Accepted connection from 127.0.0.1:35816 (socket 5)
+Client socket 5 enqueued, queue size: 1
+Client socket 5 dequeued, queue size: 0
+Accepted connection from 127.0.0.1:35830 (socket 4)
+Client socket 4 enqueued, queue size: 1
+Accepted connection from 127.0.0.1:35836 (socket 6)
+Client socket 6 enqueued, queue size: 2
+Client thread 128032996062912 handling socket 5
+Client socket 4 dequeued, queue size: 1
+Accepted connection from 127.0.0.1:35840 (socket 7)
+Client thread 128032979277504 handling socket 4
+Client socket 7 enqueued, queue size: 2
+Accepted connection from 127.0.0.1:35854 (socket 8)
+Client socket 8 enqueued, queue size: 3
+Client socket 6 dequeued, queue size: 2
+Client thread 128032954099392 handling socket 6
+Client socket 7 dequeued, queue size: 1
+Client thread 128032962492096 handling socket 7
+Client socket 8 dequeued, queue size: 0
+Client thread 128032970884800 handling socket 8
+Accepted connection from 127.0.0.1:35862 (socket 9)
+Client socket 9 enqueued, queue size: 1
+Accepted connection from 127.0.0.1:35870 (socket 10)
+Client socket 10 enqueued, queue size: 2
+Client socket 9 dequeued, queue size: 1
+Client thread 128032937313984 handling socket 9
+User 'concur_1' authentication successful
+Client socket 10 dequeued, queue size: 0
+Client thread 128032945706688 handling socket 10
+User 'concur_1' logged in successfully on socket 5
+Accepted connection from 127.0.0.1:35874 (socket 11)
+Client socket 11 enqueued, queue size: 1
+Accepted connection from 127.0.0.1:35882 (socket 13)
+Client socket 11 dequeued, queue size: 0
+Client thread 128032928921280 handling socket 11
+Client socket 13 enqueued, queue size: 1
+Accepted connection from 127.0.0.1:35890 (socket 12)
+Client socket 12 enqueued, queue size: 2
+Received command from concur_1 (socket 5): UPLOAD u1_f0.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_1 (socket 5, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_1
+Processing UPLOAD task for file u1_f0.dat (user: concur_1, priority: 2)
+55 50 4c 4f 41 44 20 75 
+User 'concur_6' authentication successful
+Worker thread 128032912135872 completed task for user concur_1
+User 'concur_6' logged in successfully on socket 10
+User 'concur_2' authentication successful
+Client socket 13 dequeued, queue size: 1
+Client thread 128032987670208 handling socket 13
+Client socket 12 dequeued, queue size: 0
+Received command from concur_6 (socket 10): UPLOAD u6_f0.dat
+Client thread 128032920528576 handling socket 12
+User 'concur_2' logged in successfully on socket 4
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Received command from concur_1 (socket 5): 1_f2.dat
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f0.dat (user: concur_6, priority: 2)
+Received command from concur_2 (socket 4): UPLOAD u2_f0.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+User 'concur_7' authentication successful
+User 'concur_8' authentication successful
+User 'concur_7' logged in successfully on socket 9
+User 'concur_8' logged in successfully on socket 11
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_2
+User 'concur_5' authentication successful
+Processing UPLOAD task for file u2_f0.dat (user: concur_2, priority: 2)
+User 'concur_5' logged in successfully on socket 8
+Received command from concur_5 (socket 8): UPLOAD u5_f0.dat
+Priority task enqueued: type=0, priority=2, count=1
+55 50 4c 4f 41 44 Received command from concur_8 (socket 11): UPLOAD u8_f1.dat
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+User 'concur_9' authentication successful
+Priority task enqueued: type=0, priority=2, count=2
+55 50 4c 4f 41 44 20 75 
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 1
+User 'concur_9' logged in successfully on socket 13
+Worker thread 128032886957760 processing task type 0 for user concur_5
+Worker thread 128032895350464 completed task for user concur_2
+User 'concur_3' authentication successful
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f1.dat (user: concur_8, priority: 2)
+Processing UPLOAD task for file u5_f0.dat (user: concur_5, priority: 2)
+20 75 
+Received command from concur_9 (socket 13): UPLOAD u9_f0.dat
+Priority task enqueued: type=0, priority=2, count=1
+Worker thread 128032903743168 completed task for user concur_6
+User 'concur_10' authentication successful
+Priority task submitted by concur_9 (socket 13, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032912135872 processing task type 0 for user concur_9
+Worker thread 128032886957760 completed task for user concur_5
+Processing UPLOAD task for file u9_f0.dat (user: concur_9, priority: 2)
+User 'concur_3' logged in successfully on socket 6
+User 'concur_10' logged in successfully on socket 12
+Received command from concur_10 (socket 12): UPLOAD u10_f0.dat
+Priority task enqueued: type=0, priority=2, count=1
+Received command from concur_5 (socket 8): 5_f1.dat
+Received command from concur_6 (socket 10): 6_f1.dat
+Received command from concur_3 (socket 6): UPLOAD u3_f0.dat
+Received command from concur_5 (socket 8): FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+Received command from concur_2 (socket 4): 2_f1.dat
+Priority task submitted by concur_10 (socket 12, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_10
+Processing UPLOAD task for file u10_f0.dat (user: concur_10, priority: 2)
+Received command from concur_2 (socket 4): DELETE u2_f1.dat
+Priority task enqueued: type=2, priority=2, count=1
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032903743168 completed task for user concur_10
+2d 2a 02 00 01 Received command from concur_7 (socket 9): UPLOAD u7_f0.dat
+00 00 00 00 00 
+Priority task enqueued: type=0, priority=2, count=2
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+00 00 00 00 00 00 
+Task dequeued (type: 2), queue size: 1
+Worker thread 128032886957760 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f1.dat (user: concur_2, priority: 2)
+Received command from concur_10 (socket 12): 10_f1.dat
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_7
+Processing UPLOAD task for file u7_f0.dat (user: concur_7, priority: 2)
+Worker thread 128032886957760 completed task for user concur_2
+User 'concur_4' authentication successful
+Received command from concur_5 (socket 8): DELETE u5_f2.dat
+Received command from concur_10 (socket 12): KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+Priority task enqueued: type=2, priority=2, count=1
+User 'concur_4' logged in successfully on socket 7
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032878565056 processing task type 2 for user concur_5
+Processing DELETE task for file u5_f2.dat (user: concur_5, priority: 2)
+Priority task enqueued: type=0, priority=2, count=1
+Received command from concur_4 (socket 7): UPLOAD u4_f0.dat
+Priority task submitted by concur_3 (socket 6, priority 2), waiting for completion...
+84 Task dequeued (type: 0), queue size: 0
+01 Priority task enqueued: type=0, priority=2, count=1
+Worker thread 128032886957760 processing task type 0 for user concur_3
+Processing UPLOAD task for file u3_f0.dat (user: concur_3, priority: 2)
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+00 00 00 00 00 00 
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_3
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f0.dat (user: concur_4, priority: 2)
+55 50 4c 4f 41 44 Received command from concur_3 (socket 6): 3_f1.dat
+20 75 
+Worker thread 128032886957760 completed task for user concur_4
+Received command from concur_4 (socket 7): 4_f1.dat
+Received command from concur_3 (socket 6): DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+Received command from concur_3 (socket 6): DOWNLOAD u3_f2.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_3 (socket 6, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032886957760 processing task type 1 for user concur_3
+Processing DOWNLOAD task for file u3_f2.dat (user: concur_3, priority: 2)
+Worker thread 128032886957760 completed task for user concur_3
+Received command from concur_4 (socket 7): EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+Worker thread 128032878565056 completed task for user concur_5
+Received command from concur_1 (socket 5): UPLOAD u1_f3.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_1 (socket 5, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_1
+Processing UPLOAD task for file u1_f3.dat (user: concur_1, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_1
+Received command from concur_1 (socket 5): 1_f4.dat
+Received command from concur_2 (socket 4): UPLOAD u2_f2.dat
+Priority task enqueued: type=0, priority=2, count=1
+Received command from concur_5 (socket 8): UPLOAD u5_f3.dat
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Priority task enqueued: type=0, priority=2, count=2
+Received command from concur_6 (socket 10): UPLOAD u6_f2.dat
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 1
+Worker thread 128032886957760 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f2.dat (user: concur_2, priority: 2)
+Priority task enqueued: type=0, priority=2, count=2
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+55 50 4c 4f 41 44 20 Task dequeued (type: 0), queue size: 1
+Worker thread 128032878565056 processing task type 0 for user concur_5
+Processing UPLOAD task for file u5_f3.dat (user: concur_5, priority: 2)
+Received command from concur_10 (socket 12): UPLOAD u10_f3.dat
+75 
+Priority task enqueued: type=0, priority=2, count=2
+Priority task submitted by concur_10 (socket 12, priority 2), waiting for completion...
+Worker thread 128032886957760 completed task for user concur_2
+Task dequeued (type: 0), queue size: 1
+Worker thread 128032886957760 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f2.dat (user: concur_6, priority: 2)
+Received command from concur_2 (socket 4): 2_f3.dat
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_5
+ce Task dequeued (type: 0), queue size: 0
+01 Worker thread 128032878565056 processing task type 0 for user concur_10
+00 Processing UPLOAD task for file u10_f3.dat (user: concur_10, priority: 2)
+00 00 00 00 00 
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_10
+Received command from concur_5 (socket 8): 5_f4.dat
+Received command from concur_10 (socket 12): 10_f4.dat
+Received command from concur_10 (socket 12): DELETE u10_f4.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_10 (socket 12, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032878565056 processing task type 2 for user concur_10
+Processing DELETE task for file u10_f4.dat (user: concur_10, priority: 2)
+Received command from concur_5 (socket 8): DELETE u5_f4.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Worker thread 128032878565056 completed task for user concur_10
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032878565056 processing task type 2 for user concur_5
+Processing DELETE task for file u5_f4.dat (user: concur_5, priority: 2)
+Received command from concur_4 (socket 7): UPLOAD u4_f2.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Worker thread 128032878565056 completed task for user concur_5
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f2.dat (user: concur_4, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_4
+Received command from concur_4 (socket 7): 4_f3.dat
+Received command from concur_4 (socket 7): ü
+Received command from concur_4 (socket 7): EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+Received command from concur_1 (socket 5): UPLOAD u1_f5.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_1 (socket 5, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_1
+Processing UPLOAD task for file u1_f5.dat (user: concur_1, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_1
+Received command from concur_1 (socket 5): 1_f6.dat
+Received command from concur_1 (socket 5): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_1 (socket 5, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user concur_1
+Processing LIST task (user: concur_1, priority: 2)
+Received command from concur_2 (socket 4): UPLOAD u2_f4.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Worker thread 128032878565056 completed task for user concur_1
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f4.dat (user: concur_2, priority: 2)
+Received command from concur_10 (socket 12): UPLOAD u10_f5.dat
+Received command from concur_1 (socket 5): DOWNLOAD u1_f6.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_10 (socket 12, priority 2), waiting for completion...
+Priority task enqueued: type=1, priority=2, count=2
+Priority task submitted by concur_1 (socket 5, priority 2), waiting for completion...
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_2
+Task dequeued (type: 0), queue size: 1
+Worker thread 128032878565056 processing task type 0 for user concur_10
+Processing UPLOAD task for file u10_f5.dat (user: concur_10, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_10
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_1
+Processing DOWNLOAD task for file u1_f6.dat (user: concur_1, priority: 2)
+Received command from concur_10 (socket 12): 10_f6.dat
+Received command from concur_2 (socket 4): 2_f5.dat
+Received command from concur_10 (socket 12): KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+Worker thread 128032878565056 completed task for user concur_1
+Received command from concur_10 (socket 12): DOWNLOAD u10_f6.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_10 (socket 12, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_10
+Processing DOWNLOAD task for file u10_f6.dat (user: concur_10, priority: 2)
+Worker thread 128032878565056 completed task for user concur_10
+Received command from concur_4 (socket 7): UPLOAD u4_f4.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f4.dat (user: concur_4, priority: 2)
+Received command from concur_5 (socket 8): UPLOAD u5_f5.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_4
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_5
+Processing UPLOAD task for file u5_f5.dat (user: concur_5, priority: 2)
+Received command from concur_4 (socket 7): 4_f5.dat
+3f 01 00 00 00 00 00 00 
+Received command from concur_4 (socket 7): DELETE u4_f5.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Received command from concur_2 (socket 4): UPLOAD u2_f6.dat
+Priority task enqueued: type=0, priority=2, count=2
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+DEBUG: Entering save_file_to_storage: user=concur_7, filename=u7_f0.dat, size=388
+DEBUG: Entering save_file_to_storage: user=concur_9, filename=u9_f0.dat, size=554
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f1.dat, size=301
+DEBUG: After save_file_to_storage: result=0
+DEBUG: After save_file_to_storage: result=0
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_7
+Task dequeued (type: 2), queue size: 1
+Worker thread 128032903743168 processing task type 2 for user concur_4
+Processing DELETE task for file u4_f5.dat (user: concur_4, priority: 2)
+Worker thread 128032912135872 completed task for user concur_9
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f6.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032912135872 completed task for user concur_2
+Received command from concur_7 (socket 9): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032912135872 processing task type 3 for user concur_7
+Processing LIST task (user: concur_7, priority: 2)
+Received command from concur_2 (socket 4): 2_f7.dat
+Received command from concur_9 (socket 13): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_9 (socket 13, priority 2), waiting for completion...
+Received command from concur_2 (socket 4): CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+Worker thread 128032912135872 completed task for user concur_7
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032912135872 processing task type 3 for user concur_9
+Processing LIST task (user: concur_9, priority: 2)
+Worker thread 128032895350464 completed task for user concur_8
+Worker thread 128032912135872 completed task for user concur_9
+Received command from concur_9 (socket 13): DOWNLOAD u9_f1.dat
+Priority task enqueued: type=1, priority=2, count=1
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032895350464 processing task type 1 for user concur_9
+Processing DOWNLOAD task for file u9_f1.dat (user: concur_9, priority: 2)
+Worker thread 128032895350464 completed task for user concur_9
+Priority task submitted by concur_9 (socket 13, priority 2), waiting for completion...
+Worker thread 128032903743168 completed task for user concur_4
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f2.dat, size=462
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_7 (socket 9): UPLOAD u7_f2.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_7
+Processing UPLOAD task for file u7_f2.dat (user: concur_7, priority: 2)
+Received command from concur_2 (socket 4): UPLOAD u2_f8.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f8.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032895350464 completed task for user concur_2
+b1 02 00 00 00 00 00 00 
+Received command from concur_2 (socket 4): 2_f9.dat
+Received command from concur_8 (socket 11): UPLOAD u8_f3.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f3.dat (user: concur_8, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032903743168 completed task for user concur_8
+Received command from concur_8 (socket 11): 8_f4.dat
+Received command from concur_8 (socket 11): DELETE u8_f4.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032886957760 processing task type 2 for user concur_8
+Processing DELETE task for file u8_f4.dat (user: concur_8, priority: 2)
+Worker thread 128032886957760 completed task for user concur_8
+Received command from concur_4 (socket 7): UPLOAD u4_f6.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f6.dat (user: concur_4, priority: 2)
+30 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_5, filename=u5_f5.dat, size=319
+Received command from concur_6 (socket 10): UPLOAD u6_f3.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f3.dat (user: concur_6, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_6 (socket 10): 6_f4.dat
+Received command from concur_2 (socket 4): UPLOAD u2_f10.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f10.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): 2_f11.dat
+Received command from concur_2 (socket 4): DELETE u2_f11.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032903743168 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f11.dat (user: concur_2, priority: 2)
+DEBUG: After save_file_to_storage: result=0
+Received command from concur_8 (socket 11): UPLOAD u8_f5.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f5.dat (user: concur_8, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_8
+Received command from concur_8 (socket 11): 8_f6.dat
+Worker thread 128032903743168 completed task for user concur_2
+Worker thread 128032878565056 completed task for user concur_5
+Received command from concur_6 (socket 10): UPLOAD u6_f5.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f5.dat (user: concur_6, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_6 (socket 10): 6_f6.dat
+Received command from concur_2 (socket 4): UPLOAD u2_f12.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f12.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032903743168 completed task for user concur_2
+Received command from concur_2 (socket 4): 2_f13.dat
+Received command from concur_8 (socket 11): UPLOAD u8_f7.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f7.dat (user: concur_8, priority: 2)
+07 01 00 00 00 00 00 00 
+Received command from concur_5 (socket 8): UPLOAD u5_f7.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_5
+Processing UPLOAD task for file u5_f7.dat (user: concur_5, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_5
+Received command from concur_5 (socket 8): 5_f8.dat
+Received command from concur_5 (socket 8): FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+Received command from concur_5 (socket 8): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032903743168 processing task type 3 for user concur_5
+Processing LIST task (user: concur_5, priority: 2)
+Worker thread 128032903743168 completed task for user concur_5
+Received command from concur_5 (socket 8): DOWNLOAD u5_f8.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_5 (socket 8, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032886957760 processing task type 1 for user concur_5
+Processing DOWNLOAD task for file u5_f8.dat (user: concur_5, priority: 2)
+Worker thread 128032886957760 completed task for user concur_5
+Received command from concur_6 (socket 10): UPLOAD u6_f7.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f7.dat (user: concur_6, priority: 2)
+2e 01 00 00 00 00 00 00 
+Received command from concur_2 (socket 4): UPLOAD u2_f14.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f14.dat (user: concur_2, priority: 2)
+57 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_7, filename=u7_f2.dat, size=689
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f6.dat, size=304
+DEBUG: After save_file_to_storage: result=0
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user concur_7
+Received command from concur_7 (socket 9): DOWNLOAD u7_f3.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_7
+Processing DOWNLOAD task for file u7_f3.dat (user: concur_7, priority: 2)
+Worker thread 128032912135872 completed task for user concur_7
+Worker thread 128032895350464 completed task for user concur_4
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f7.dat, size=263
+Received command from concur_4 (socket 7): UPLOAD u4_f8.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f8.dat (user: concur_4, priority: 2)
+cc 02 00 00 00 00 00 00 
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032878565056 completed task for user concur_8
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f7.dat, size=302
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f14.dat, size=599
+DEBUG: After save_file_to_storage: result=0
+Received command from concur_8 (socket 11): UPLOAD u8_f8.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f8.dat (user: concur_8, priority: 2)
+Worker thread 128032903743168 completed task for user concur_6
+14 02 00 00 00 00 00 00 
+Received command from concur_6 (socket 10): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user concur_6
+Processing LIST task (user: concur_6, priority: 2)
+Worker thread 128032878565056 completed task for user concur_6
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): DELETE u2_f15.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032903743168 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f15.dat (user: concur_2, priority: 2)
+Worker thread 128032903743168 completed task for user concur_2
+Received command from concur_6 (socket 10): UPLOAD u6_f8.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f8.dat (user: concur_6, priority: 2)
+a2 01 00 00 00 00 00 00 
+Received command from concur_2 (socket 4): UPLOAD u2_f16.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f16.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): 2_f17.dat
+Received command from concur_2 (socket 4): UPLOAD u2_f18.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f18.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032903743168 completed task for user concur_2
+Received command from concur_2 (socket 4): 2_f19.dat
+Received command from concur_2 (socket 4): UPLOAD u2_f20.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f20.dat (user: concur_2, priority: 2)
+2c 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f8.dat, size=716
+Received command from concur_7 (socket 9): UPLOAD u7_f4.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_7
+Processing UPLOAD task for file u7_f4.dat (user: concur_7, priority: 2)
+61 01 00 00 00 00 00 00 
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user concur_4
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f8.dat, size=532
+Received command from concur_4 (socket 7): UPLOAD u4_f10.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f10.dat (user: concur_4, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032912135872 completed task for user concur_4
+Received command from concur_4 (socket 7): 4_f11.dat
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_8
+Received command from concur_8 (socket 11): DOWNLOAD u8_f9.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_8
+Processing DOWNLOAD task for file u8_f9.dat (user: concur_8, priority: 2)
+Worker thread 128032912135872 completed task for user concur_8
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f8.dat, size=418
+Received command from concur_4 (socket 7): UPLOAD u4_f12.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f12.dat (user: concur_4, priority: 2)
+a5 01 00 00 00 00 00 00 
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032878565056 completed task for user concur_6
+Received command from concur_6 (socket 10): DOWNLOAD u6_f9.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_6
+Processing DOWNLOAD task for file u6_f9.dat (user: concur_6, priority: 2)
+Worker thread 128032912135872 completed task for user concur_6
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f20.dat, size=300
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): DOWNLOAD u2_f20.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_2
+Processing DOWNLOAD task for file u2_f20.dat (user: concur_2, priority: 2)
+Worker thread 128032878565056 completed task for user concur_2
+DEBUG: Entering save_file_to_storage: user=concur_7, filename=u7_f4.dat, size=353
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_7
+Received command from concur_7 (socket 9): UPLOAD u7_f5.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_7
+Processing UPLOAD task for file u7_f5.dat (user: concur_7, priority: 2)
+09 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f12.dat, size=421
+Received command from concur_8 (socket 11): UPLOAD u8_f10.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f10.dat (user: concur_8, priority: 2)
+45 02 00 00 00 00 00 00 
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_4
+Received command from concur_4 (socket 7): DOWNLOAD u4_f12.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_4
+Processing DOWNLOAD task for file u4_f12.dat (user: concur_4, priority: 2)
+Worker thread 128032878565056 completed task for user concur_4
+Received command from concur_6 (socket 10): UPLOAD u6_f10.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f10.dat (user: concur_6, priority: 2)
+ba 02 00 00 00 00 00 00 
+Received command from concur_2 (socket 4): UPLOAD u2_f21.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f21.dat (user: concur_2, priority: 2)
+85 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_7, filename=u7_f5.dat, size=521
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user concur_7
+Received command from concur_7 (socket 9): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user concur_7
+Processing LIST task (user: concur_7, priority: 2)
+Worker thread 128032878565056 completed task for user concur_7
+Received command from concur_7 (socket 9): DELETE u7_f6.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032912135872 processing task type 2 for user concur_7
+Processing DELETE task for file u7_f6.dat (user: concur_7, priority: 2)
+Worker thread 128032912135872 completed task for user concur_7
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f10.dat, size=581
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032886957760 completed task for user concur_8
+Received command from concur_7 (socket 9): UPLOAD u7_f7.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_7
+Processing UPLOAD task for file u7_f7.dat (user: concur_7, priority: 2)
+80 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f10.dat, size=698
+Received command from concur_4 (socket 7): UPLOAD u4_f13.dat
+DEBUG: After save_file_to_storage: result=0
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Received command from concur_8 (socket 11): UPLOAD u8_f11.dat
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f13.dat (user: concur_4, priority: 2)
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f11.dat (user: concur_8, priority: 2)
+b1 02 00 00 00 00 00 00 
+e7 02 00 00 00 00 00 00 
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_6 (socket 10): DELETE u6_f10.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032903743168 processing task type 2 for user concur_6
+Processing DELETE task for file u6_f10.dat (user: concur_6, priority: 2)
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_6 (socket 10): UPLOAD u6_f11.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f11.dat (user: concur_6, priority: 2)
+d7 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f21.dat, size=389
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): DELETE u2_f21.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032895350464 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f21.dat (user: concur_2, priority: 2)
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): UPLOAD u2_f22.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f22.dat (user: concur_2, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): 2_f23.dat
+Received command from concur_2 (socket 4): DELETE u2_f23.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032895350464 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f23.dat (user: concur_2, priority: 2)
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): UPLOAD u2_f24.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f24.dat (user: concur_2, priority: 2)
+f4 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_7, filename=u7_f7.dat, size=384
+DEBUG: After save_file_to_storage: result=0
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f13.dat, size=689
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f11.dat, size=743
+Worker thread 128032878565056 completed task for user concur_7
+Received command from concur_7 (socket 9): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user concur_7
+Processing LIST task (user: concur_7, priority: 2)
+Worker thread 128032878565056 completed task for user concur_7
+Received command from concur_7 (socket 9): DOWNLOAD u7_f8.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_7 (socket 9, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_7
+Processing DOWNLOAD task for file u7_f8.dat (user: concur_7, priority: 2)
+Worker thread 128032878565056 completed task for user concur_7
+DEBUG: After save_file_to_storage: result=0
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user concur_4
+Worker thread 128032886957760 completed task for user concur_8
+Received command from concur_8 (socket 11): DOWNLOAD u8_f12.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032878565056 processing task type 1 for user concur_8
+Processing DOWNLOAD task for file u8_f12.dat (user: concur_8, priority: 2)
+Worker thread 128032878565056 completed task for user concur_8
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f11.dat, size=471
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_4 (socket 7): UPLOAD u4_f14.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032912135872 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f14.dat (user: concur_4, priority: 2)
+f0 02 00 00 00 00 00 00 
+Received command from concur_6 (socket 10): UPLOAD u6_f13.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f13.dat (user: concur_6, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_6 (socket 10): 6_f14.dat
+Received command from concur_6 (socket 10): DELETE u6_f14.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032878565056 processing task type 2 for user concur_6
+Processing DELETE task for file u6_f14.dat (user: concur_6, priority: 2)
+Worker thread 128032878565056 completed task for user concur_6
+Received command from concur_6 (socket 10): UPLOAD u6_f15.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f15.dat (user: concur_6, priority: 2)
+a6 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f24.dat, size=500
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032886957760 processing task type 3 for user concur_2
+Processing LIST task (user: concur_2, priority: 2)
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): UPLOAD u2_f26.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f26.dat (user: concur_2, priority: 2)
+fe 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f14.dat, size=752
+Received command from concur_8 (socket 11): UPLOAD u8_f13.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f13.dat (user: concur_8, priority: 2)
+ea 01 00 00 00 00 00 00 
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032912135872 completed task for user concur_4
+Received command from concur_4 (socket 7): DOWNLOAD u4_f15.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032886957760 processing task type 1 for user concur_4
+Processing DOWNLOAD task for file u4_f15.dat (user: concur_4, priority: 2)
+Worker thread 128032886957760 completed task for user concur_4
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f15.dat, size=422
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_6 (socket 10): DOWNLOAD u6_f16.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_6
+Processing DOWNLOAD task for file u6_f16.dat (user: concur_6, priority: 2)
+Worker thread 128032912135872 completed task for user concur_6
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f26.dat, size=510
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032878565056 completed task for user concur_2
+Received command from concur_2 (socket 4): DELETE u2_f27.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032886957760 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f27.dat (user: concur_2, priority: 2)
+Worker thread 128032886957760 completed task for user concur_2
+Received command from concur_2 (socket 4): UPLOAD u2_f28.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_2
+Processing UPLOAD task for file u2_f28.dat (user: concur_2, priority: 2)
+80 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_8, filename=u8_f13.dat, size=490
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_8
+Received command from concur_8 (socket 11): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032912135872 processing task type 3 for user concur_8
+Processing LIST task (user: concur_8, priority: 2)
+Worker thread 128032912135872 completed task for user concur_8
+Received command from concur_4 (socket 7): UPLOAD u4_f16.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f16.dat (user: concur_4, priority: 2)
+b1 01 00 00 00 00 00 00 
+Received command from concur_8 (socket 11): UPLOAD u8_f14.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_8
+Processing UPLOAD task for file u8_f14.dat (user: concur_8, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032886957760 completed task for user concur_8
+Received command from concur_8 (socket 11): 8_f15.dat
+Received command from concur_8 (socket 11): 4
+Received command from concur_8 (socket 11): IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+Received command from concur_8 (socket 11): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032895350464 processing task type 3 for user concur_8
+Processing LIST task (user: concur_8, priority: 2)
+Worker thread 128032895350464 completed task for user concur_8
+Received command from concur_8 (socket 11): DOWNLOAD u8_f15.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_8 (socket 11, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_8
+Processing DOWNLOAD task for file u8_f15.dat (user: concur_8, priority: 2)
+Worker thread 128032912135872 completed task for user concur_8
+Received command from concur_6 (socket 10): UPLOAD u6_f17.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f17.dat (user: concur_6, priority: 2)
+ae 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_2, filename=u2_f28.dat, size=384
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_2
+Received command from concur_2 (socket 4): DELETE u2_f29.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_2 (socket 4, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032895350464 processing task type 2 for user concur_2
+Processing DELETE task for file u2_f29.dat (user: concur_2, priority: 2)
+Worker thread 128032895350464 completed task for user concur_2
+Received command from concur_2 (socket 4): QUIT
+User concur_2 (socket 4) quit
+Client thread 128032979277504 finished handling socket 4
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f16.dat, size=433
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032878565056 completed task for user concur_4
+Received command from concur_4 (socket 7): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032912135872 processing task type 3 for user concur_4
+Processing LIST task (user: concur_4, priority: 2)
+Worker thread 128032912135872 completed task for user concur_4
+Received command from concur_4 (socket 7): UPLOAD u4_f17.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f17.dat (user: concur_4, priority: 2)
+b2 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f17.dat, size=686
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_6 (socket 10): DOWNLOAD u6_f17.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032895350464 processing task type 1 for user concur_6
+Processing DOWNLOAD task for file u6_f17.dat (user: concur_6, priority: 2)
+Worker thread 128032895350464 completed task for user concur_6
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f17.dat, size=434
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_4
+Received command from concur_4 (socket 7): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032878565056 processing task type 3 for user concur_4
+Processing LIST task (user: concur_4, priority: 2)
+Worker thread 128032878565056 completed task for user concur_4
+Received command from concur_6 (socket 10): DELETE u6_f17.dat
+Priority task enqueued: type=2, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 2), queue size: 0
+Worker thread 128032912135872 processing task type 2 for user concur_6
+Processing DELETE task for file u6_f17.dat (user: concur_6, priority: 2)
+Worker thread 128032912135872 completed task for user concur_6
+Received command from concur_4 (socket 7): UPLOAD u4_f19.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032886957760 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f19.dat (user: concur_4, priority: 2)
+72 01 00 00 00 00 00 00 
+Received command from concur_6 (socket 10): UPLOAD u6_f18.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f18.dat (user: concur_6, priority: 2)
+43 01 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f19.dat, size=370
+DEBUG: After save_file_to_storage: result=0
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f18.dat, size=323
+Worker thread 128032886957760 completed task for user concur_4
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_6
+Received command from concur_4 (socket 7): UPLOAD u4_f21.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f21.dat (user: concur_4, priority: 2)
+2a 02 00 00 00 00 00 00 
+Received command from concur_6 (socket 10): UPLOAD u6_f20.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f20.dat (user: concur_6, priority: 2)
+31 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f21.dat, size=554
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f20.dat, size=561
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_4
+Received command from concur_4 (socket 7): DOWNLOAD u4_f22.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_4
+Processing DOWNLOAD task for file u4_f22.dat (user: concur_4, priority: 2)
+Worker thread 128032912135872 completed task for user concur_4
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032878565056 completed task for user concur_6
+Received command from concur_6 (socket 10): DOWNLOAD u6_f21.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032886957760 processing task type 1 for user concur_6
+Processing DOWNLOAD task for file u6_f21.dat (user: concur_6, priority: 2)
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_4 (socket 7): UPLOAD u4_f23.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f23.dat (user: concur_4, priority: 2)
+10 02 00 00 00 00 00 00 
+Received command from concur_6 (socket 10): UPLOAD u6_f22.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032903743168 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f22.dat (user: concur_6, priority: 2)
+5f 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f23.dat, size=528
+DEBUG: Entering save_file_to_storage: user=concur_6, filename=u6_f22.dat, size=607
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_4
+Received command from concur_4 (socket 7): DOWNLOAD u4_f23.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032912135872 processing task type 1 for user concur_4
+Processing DOWNLOAD task for file u4_f23.dat (user: concur_4, priority: 2)
+Worker thread 128032912135872 completed task for user concur_4
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032903743168 completed task for user concur_6
+Received command from concur_6 (socket 10): UPLOAD u6_f23.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032878565056 processing task type 0 for user concur_6
+Processing UPLOAD task for file u6_f23.dat (user: concur_6, priority: 2)
+55 50 4c 4f 41 44 20 75 
+Worker thread 128032878565056 completed task for user concur_6
+Received command from concur_6 (socket 10): 6_f24.dat
+Received command from concur_6 (socket 10): DOWNLOAD u6_f24.dat
+Priority task enqueued: type=1, priority=2, count=1
+Priority task submitted by concur_6 (socket 10, priority 2), waiting for completion...
+Task dequeued (type: 1), queue size: 0
+Worker thread 128032886957760 processing task type 1 for user concur_6
+Processing DOWNLOAD task for file u6_f24.dat (user: concur_6, priority: 2)
+Worker thread 128032886957760 completed task for user concur_6
+Received command from concur_4 (socket 7): UPLOAD u4_f24.dat
+Priority task enqueued: type=0, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 0), queue size: 0
+Worker thread 128032895350464 processing task type 0 for user concur_4
+Processing UPLOAD task for file u4_f24.dat (user: concur_4, priority: 2)
+c4 02 00 00 00 00 00 00 
+DEBUG: Entering save_file_to_storage: user=concur_4, filename=u4_f24.dat, size=708
+DEBUG: After save_file_to_storage: result=0
+Worker thread 128032895350464 completed task for user concur_4
+Received command from concur_4 (socket 7): LIST
+Priority task enqueued: type=3, priority=2, count=1
+Priority task submitted by concur_4 (socket 7, priority 2), waiting for completion...
+Task dequeued (type: 3), queue size: 0
+Worker thread 128032912135872 proce

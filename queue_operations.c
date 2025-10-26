@@ -359,12 +359,54 @@ void destroy_task(task_t *task) {
 // Utility Functions
 void send_response(int socket_fd, const char *response) {
     if (socket_fd < 0 || !response) return;
-    
+
     size_t len = strlen(response);
-    ssize_t sent = send(socket_fd, response, len, 0);
+    ssize_t sent;
+
+#ifdef MSG_NOSIGNAL
+    sent = send(socket_fd, response, len, MSG_NOSIGNAL);
+#else
+    sent = send(socket_fd, response, len, 0);
+#endif
+
     if (sent != (ssize_t)len) {
-        perror("Failed to send complete response");
+        if (sent < 0) {
+            // Common benign case: client closed connection (Broken pipe / Connection reset)
+            if (errno == EPIPE || errno == ECONNRESET) {
+                // Quietly ignore - client disconnected
+                return;
+            }
+            // For other errors, don't spam perror in normal runs; silently return.
+            return;
+        }
+        // Partial send - nothing we can do reliably here; return quietly.
+        return;
     }
+}
+
+// Utility send that handles partial writes and avoids SIGPIPE when possible
+ssize_t send_all(int socket_fd, const void *buf, size_t len) {
+    if (socket_fd < 0 || !buf || len == 0) return 0;
+    const char *p = buf;
+    size_t remaining = len;
+    while (remaining > 0) {
+        ssize_t sent;
+#ifdef MSG_NOSIGNAL
+        sent = send(socket_fd, p, remaining, MSG_NOSIGNAL);
+#else
+        sent = send(socket_fd, p, remaining, 0);
+#endif
+        if (sent < 0) {
+            if (errno == EINTR) continue; // retry on interrupt
+            // benign disconnects: client closed connection
+            if (errno == EPIPE || errno == ECONNRESET) return -1;
+            return -1;
+        }
+        if (sent == 0) return -1; // shouldn't happen but treat as error
+        p += sent;
+        remaining -= (size_t)sent;
+    }
+    return (ssize_t)len;
 }
 
 int receive_data(int socket_fd, char *buffer, size_t buffer_size) {
